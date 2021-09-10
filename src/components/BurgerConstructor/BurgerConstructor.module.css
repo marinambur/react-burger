@@ -1,0 +1,12 @@
+.section {
+    display: flex;
+}
+.itemBox {
+    display: flex;
+    flex-wrap: wrap;
+    width: 50%;
+}
+.constructorContainer {
+    display: flex;
+    width: 100%;
+}

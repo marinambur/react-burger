@@ -1,0 +1,15 @@
+.item {
+    width: 272px;
+    height: 272px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.img {
+    width: 240px;
+    height: 120px;
+}
+.text {
+    display: flex;
+    align-items: center;
+}

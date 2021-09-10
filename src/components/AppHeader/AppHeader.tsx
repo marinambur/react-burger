@@ -5,7 +5,7 @@ import {BurgerIcon, ListIcon, Logo, ProfileIcon} from "@ya.praktikum/react-devel
 
 function AppHeader() {
     return (
-        <div className={styles.header}>
+        <header className={`${styles.header} mb-10`}>
             <div className={styles.container}>
                 <nav className={styles.nav}>
                     <a href="#" className={styles.menuButton}>
@@ -33,7 +33,7 @@ function AppHeader() {
             </div>
 
 
-        </div>
+        </header>
 
     );
 }
