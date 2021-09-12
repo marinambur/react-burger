@@ -9,7 +9,7 @@ function BurgerIngredient(props: any) {
                 {props.name}
             </p>
             <div className={`${styles.text} mb-1`}>
-                <p className="text text_type_digits-medium mb-1">{props.price}</p>
+                <p className="text text_type_digits-default mb-1">{props.price}</p>
                 <CurrencyIcon type="primary" />
             </div>
         </div>

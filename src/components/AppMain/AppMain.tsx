@@ -1,6 +1,7 @@
 import React from 'react';
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import styles from "./AppMain.module.css";
+import BurgerIngredients from "../BurgerIngridients/BurgerIngridients";
 function AppMain() {
     return (
         <main className={styles.main}>
@@ -8,6 +9,7 @@ function AppMain() {
                 <h1 className="text text_type_main-large mb-5">Соберите бургер</h1>
                 <div className={styles.burgerBox}>
                     <BurgerConstructor />
+                    <BurgerIngredients />
                 </div>
 
             </div>
