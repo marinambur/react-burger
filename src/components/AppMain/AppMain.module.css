@@ -1,0 +1,15 @@
+.main {
+    height: 100vh;
+    background-color: #131316;
+    display: flex;
+    justify-content: center;
+    color: #F2F2F3;
+}
+.content {
+    width: 78%;
+}
+.burgerBox {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
