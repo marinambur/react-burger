@@ -9,7 +9,7 @@ function BurgerConstructor() {
     const [current, setCurrent] = React.useState('one')
     return (
         <section>
-            <div className={`${styles.section} mb-10`}>
+            <div className={`${styles.section} mb-5`}>
                     <Tab value="one" active={current === 'one'} onClick={setCurrent}>
                         Булки
                     </Tab>
@@ -20,7 +20,7 @@ function BurgerConstructor() {
                         Начинки
                     </Tab>
             </div>
-            <h2 className="text text_type_main-medium mb-6">Булки</h2>
+            <h2 className="text text_type_main-medium mb-2">Булки</h2>
             <div className={styles.constructorContainer}>
                 <div className={`${customScroll.customScroll} ${styles.box}`}>
                     <div className={styles.itemBox}>
@@ -28,10 +28,10 @@ function BurgerConstructor() {
                             <BurgerItem key={index} img={item.image} name={item.name} price={item.price} />
                         )}
                     </div>
-                    <h2 className="text text_type_main-medium mb-6">Соусы</h2>
+                    <h2 className="text text_type_main-medium mb-2">Соусы</h2>
                     <div className={styles.itemBox}>
                         {items.filter(item => item.type === 'sauce').map((item, index) =>
-                            <BurgerItem key={index} img={item.image} name={item.name} price={item.price} />
+                                <BurgerItem key={index} img={item.image} name={item.name} price={item.price} />
                         )}
                     </div>
                 </div>
