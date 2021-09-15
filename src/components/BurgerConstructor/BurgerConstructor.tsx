@@ -3,10 +3,9 @@ import styles from './BurgerConstructor.module.css';
 import customScroll from '../BurgerIngridients/BurgerIngridients.module.css';
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerItem from "../BurgerItem/BurgerItem";
-import {items} from "../../utils/data";
 
-function BurgerConstructor() {
-    const [current, setCurrent] = React.useState('one')
+function BurgerConstructor(props: any) {
+    const [current, setCurrent] = React.useState('one');
     return (
         <section>
             <div className={`${styles.section} mb-5`}>
@@ -24,13 +23,13 @@ function BurgerConstructor() {
             <div className={styles.constructorContainer}>
                 <div className={`${customScroll.customScroll} ${styles.box}`}>
                     <div className={styles.itemBox}>
-                        {items.filter(item => item.type === 'bun').map((item, index) =>
+                        {props.items.data && props.items.data.filter((item: { type: string; }) => item.type === 'bun').map((item: { image: any; name: any; price: any; }, index: any) =>
                             <BurgerItem key={index} img={item.image} name={item.name} price={item.price} />
                         )}
                     </div>
                     <h2 className="text text_type_main-medium mb-2">Соусы</h2>
                     <div className={styles.itemBox}>
-                        {items.filter(item => item.type === 'sauce').map((item, index) =>
+                        {props.items.data && props.items.data.filter((item: { type: string; }) => item.type === 'sauce').map((item: { image: any; name: any; price: any; }, index: any) =>
                                 <BurgerItem key={index} img={item.image} name={item.name} price={item.price} />
                         )}
                     </div>
