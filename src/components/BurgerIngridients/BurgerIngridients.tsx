@@ -1,7 +1,14 @@
 import React, {useState} from 'react';
 import styles from './BurgerIngridients.module.css'
-import {ConstructorElement, CurrencyIcon, Button, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
+import {
+    ConstructorElement,
+    CurrencyIcon,
+    Button,
+    DragIcon,
+    CheckMarkIcon
+} from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../Modal/Modal";
+import OrderDetails from "../OrderDetails/OrderDetails";
 function BurgerIngredients(props: any) {
     const [orderModal, setOrderModal] = useState(false);
     const makeOrder = () => {
@@ -9,7 +16,9 @@ function BurgerIngredients(props: any) {
     }
     return (
         <div className={`mt-3`}>
-            {orderModal && <Modal onClose={makeOrder} ></Modal>}
+            {orderModal && <Modal onClose={makeOrder} >
+       <OrderDetails></OrderDetails>
+            </Modal>}
             <div className={`mb-20`} style={{ display: 'flex', flexDirection: 'column' }}>
                 {props.items.data && props.items.data.filter((item: { type: string; name: string; }) => item.type === 'bun' && item.name==='Краторная булка N-200i').map((item: { _id: React.Key | null | undefined; name: any; price: number; image: string; }, index: any) =>
                     <ConstructorElement

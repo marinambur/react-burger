@@ -16,8 +16,8 @@ function Modal(props: any) {
         (
             <>
                 <ModalOverlay onClose={props.onClose}>
-                    <CloseIcon type="primary" onClick={props.onClose}/>
                     <div className={styles.popup}>
+                        <div className={styles.close}><CloseIcon type="primary" onClick={props.onClose}/></div>
                         {props.children}
                     </div>
                 </ModalOverlay>
