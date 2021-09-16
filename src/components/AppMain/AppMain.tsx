@@ -4,16 +4,15 @@ import styles from "./AppMain.module.css";
 import BurgerIngredients from "../BurgerIngridients/BurgerIngridients";
 function AppMain() {
     const [data, setData] = useState([]);
-
+    const url = 'https://norma.nomoreparties.space/api/ingredients '
     const getData = () => {
-
-        fetch('https://norma.nomoreparties.space/api/ingredients ')
+        fetch(url)
             .then((res) => res.json())
             .then((data) =>
             setData(data),
             )
-            .catch((e) => {
-                console.log('ошибка')
+            .catch((error) => {
+                console.log(error)
             });
     }
     useEffect(getData, []);

@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from "./OrderDetails.module.css";
 import {CheckMarkIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-function OrderDetails(props: any) {
+function OrderDetails() {
     return (
         <div className={styles.box}>
             <p className={`${styles.glow} text text_type_digits-large mb-8`}>034536</p>

@@ -1,16 +1,21 @@
 import React, {useState} from 'react';
+import PropTypes from 'prop-types';
 import styles from './BurgerIngridients.module.css'
 import {
     ConstructorElement,
     CurrencyIcon,
     Button,
     DragIcon,
-    CheckMarkIcon
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../Modal/Modal";
 import OrderDetails from "../OrderDetails/OrderDetails";
 function BurgerIngredients(props: any) {
     const [orderModal, setOrderModal] = useState(false);
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            setOrderModal(false);
+        }
+    });
     const makeOrder = () => {
         setOrderModal(!orderModal);
     }
@@ -66,5 +71,10 @@ function BurgerIngredients(props: any) {
         </div>
     );
 }
-
+BurgerIngredients.propTypes = {
+    items: PropTypes.oneOfType([
+        PropTypes.object,
+        PropTypes.array,
+    ]),
+};
 export default BurgerIngredients;
