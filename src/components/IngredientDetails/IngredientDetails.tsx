@@ -31,7 +31,15 @@ function IngredientDetails(props: any) {
         </div>
     );
 }
+const infoPropTypes = PropTypes.shape({
+    fat: PropTypes.number.isRequired,
+    carbohydrates: PropTypes.number.isRequired,
+    proteins: PropTypes.number.isRequired,
+    calories: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    image_large: PropTypes.string.isRequired,
+});
 IngredientDetails.propTypes={
-    info: PropTypes.object
+    info: infoPropTypes
 }
 export default IngredientDetails;
