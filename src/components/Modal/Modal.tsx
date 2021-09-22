@@ -22,6 +22,14 @@ function Modal(props: any) {
             props.onClose();
         }
     };
+    const onOverlayClose = (e: any) => {
+        e.stopPropagation();
+        const overlay = document.getElementById('overlay')
+        if (e.target===overlay ) {
+            props.onClose()
+        }
+
+    }
     useEffect(()=> {
         document.addEventListener('keydown', closeOnEsc);
         return () => {
@@ -32,7 +40,7 @@ function Modal(props: any) {
     return ReactDOM.createPortal(
         (
             <>
-                <ModalOverlay onClose={props.onOverlayClose}>
+                <ModalOverlay onClose={onOverlayClose}>
                     <div className={styles.popup}>
                         <div className={styles.close}><CloseIcon type="primary" onClick={props.onClose}/></div>
                         {props.children}
@@ -46,6 +54,6 @@ function Modal(props: any) {
 Modal.propTypes = {
     onClose: PropTypes.func.isRequired,
     children: PropTypes.element.isRequired,
-    onOverlayClose: PropTypes.func.isRequired,
+    // onOverlayClose: PropTypes.func.isRequired,
 }
 export default Modal;
