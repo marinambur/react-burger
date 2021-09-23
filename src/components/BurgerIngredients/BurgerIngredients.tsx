@@ -5,13 +5,13 @@ import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerItem from "../BurgerItem/BurgerItem";
 import Modal from "../Modal/Modal";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
-import PropTypes from "prop-types";
-import { TotalPriceContext, IngredientsContext } from '../../services/appContext';
-function BurgerIngredients(props: any) {
+import {TotalPriceContext, IngredientsContext, BurgerIngredientsContext} from '../../services/appContext';
+function BurgerIngredients() {
     const [current, setCurrent] = React.useState('one');
     const [ingredientsModal, setIngredientsModal] = useState(false);
     const [info, setInfo] = useState(null);
     const { totalPrice, setTotalPrice } = useContext(TotalPriceContext);
+    const { burgerIngredients, setBurgerIngredients} = useContext(BurgerIngredientsContext);
     const { ingredients, setIngredients } = useContext(IngredientsContext);
     const closeIngredientsModal = (e: any) => {
             setIngredientsModal(false);
@@ -47,11 +47,12 @@ function BurgerIngredients(props: any) {
                     Начинки
                 </Tab>
             </div>
-            <h2 className="text text_type_main-medium mb-2">Булки</h2>
+            <h2 className="text text_type_main-medium mb-2"></h2>
             <div className={styles.constructorContainer}>
                 <div className={`${customScroll.customScroll} ${styles.box}`}>
+                    <h2 className="text text_type_main-medium mb-2">Булки</h2>
                     <div className={styles.itemBox}>
-                        {props.items && props.items.filter((item: { type: string; }) => item.type === 'bun').map((item: {
+                        {burgerIngredients && burgerIngredients.filter((item: { type: string; }) => item.type === 'bun').map((item: {
                             _id: any;
                             image: any; name: any; price: any; }, index: any) =>
                             <div key={item._id} onClick={() => {
@@ -61,7 +62,16 @@ function BurgerIngredients(props: any) {
                     </div>
                     <h2 className="text text_type_main-medium mb-2">Соусы</h2>
                     <div className={styles.itemBox}>
-                        {props.items && props.items.filter((item: { type: string; }) => item.type === 'sauce').map((item: {
+                        {burgerIngredients && burgerIngredients.filter((item: { type: string; }) => item.type === 'sauce').map((item: {
+                            _id: any;
+                            image: any; name: any; price: any; }, index: any) =>
+                            <div key={item._id} onClick={() => {
+                                showIngredientsModal(item)}}><BurgerItem img={item.image} name={item.name} price={item.price} /></div>
+                        )}
+                    </div>
+                    <h2 className="text text_type_main-medium mb-2">Начинки</h2>
+                    <div className={styles.itemBox}>
+                        {burgerIngredients && burgerIngredients.filter((item: { type: string; }) => item.type === 'main').map((item: {
                             _id: any;
                             image: any; name: any; price: any; }, index: any) =>
                             <div key={item._id} onClick={() => {
@@ -73,24 +83,4 @@ function BurgerIngredients(props: any) {
         </section>
     );
 }
-const itemsPropTypes = PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    proteins: PropTypes.number.isRequired,
-    fat: PropTypes.number.isRequired,
-    carbohydrates: PropTypes.number.isRequired,
-    calories: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired,
-    image_mobile: PropTypes.string.isRequired,
-    image_large: PropTypes.string.isRequired,
-    __v: PropTypes.number.isRequired,
-});
-
-BurgerIngredients.propTypes = {
-    items: PropTypes.oneOfType([
-        PropTypes.arrayOf(itemsPropTypes)
-    ]),
-};
 export default BurgerIngredients;

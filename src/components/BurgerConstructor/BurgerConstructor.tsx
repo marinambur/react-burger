@@ -1,5 +1,4 @@
 import React, {useContext, useState} from 'react';
-import PropTypes from 'prop-types';
 import styles from './BurgerConstructor.module.css'
 import {
     ConstructorElement,
@@ -10,12 +9,11 @@ import {
 import Modal from "../Modal/Modal";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import {IngredientsContext, TotalPriceContext, OrderContext} from '../../services/appContext';
-function BurgerConstructor(props: any) {
+function BurgerConstructor() {
     const [orderModal, setOrderModal] = useState(false);
     const { totalPrice, setTotalPrice } = useContext(TotalPriceContext);
     const { ingredients, setIngredients } = useContext(IngredientsContext);
     const [response, setResponse] = React.useState({success: true, order: {number: 0}, name: 'name'})
-
     function getIngredientIds(array: any[]) {
         return {ingredients: array.map((item) => item._id)};
     }
@@ -56,6 +54,7 @@ function BurgerConstructor(props: any) {
 
             postData();
             setTimeout(openModalWindow, 500);
+            setIngredients([]);
         } else {
             alert("Обязательно выберите булку!")
             return;
@@ -116,25 +115,5 @@ function BurgerConstructor(props: any) {
         </div>
     );
 }
-const itemsPropTypes = PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    proteins: PropTypes.number.isRequired,
-    fat: PropTypes.number.isRequired,
-    carbohydrates: PropTypes.number.isRequired,
-    calories: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired,
-    image_mobile: PropTypes.string.isRequired,
-    image_large: PropTypes.string.isRequired,
-    __v: PropTypes.number.isRequired,
-});
-
-BurgerConstructor.propTypes = {
-    items: PropTypes.oneOfType([
-        PropTypes.arrayOf(itemsPropTypes)
-    ]),
-};
 
 export default BurgerConstructor;
