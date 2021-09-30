@@ -2,12 +2,26 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './components/App/App';
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
 import reportWebVitals from './reportWebVitals';
+import thunk from 'redux-thunk';
+import { rootReducer } from './services/reducers';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+
+const store = createStore(rootReducer, applyMiddleware(thunk));
+
+
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
-      <div id="modals"></div>
+      <DndProvider backend={HTML5Backend}>
+          <Provider store={store}>
+                <App />
+                <div id="modals"></div>
+          </Provider>
+      </DndProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

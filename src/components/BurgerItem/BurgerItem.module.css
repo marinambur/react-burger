@@ -5,6 +5,7 @@
     flex-direction: column;
     align-items: center;
     cursor: pointer;
+    position: relative;
 }
 .img {
     width: 240px;
@@ -12,4 +13,18 @@
 }
 .text {
     display: flex;
+}
+.quantity {
+    width: 32px;
+    height: 32px;
+    font-size: 28px;
+    background-color: #4C4CFF;
+    color: white;
+    border-radius: 18px;
+    text-align: center;
+    position: absolute;
+    margin: 0;
+    right: 0;
+    top: 0;
+    padding-top: 2px;
 }
