@@ -1,14 +1,11 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, { useEffect } from 'react';
 import styles from './BurgerIngredients.module.css';
 import customScroll from '../BurgerConstructor/BurgerConstructor.module.css';
 import {useDispatch, useSelector} from 'react-redux';
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../Modal/Modal";
-import { v4 as uuidv4 } from 'uuid';
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import {
-    ADD_BUN,
-    ADD_MAIN,
     getFeed,
     ITEM_MODAL_CLOSE,
     SHOW_INFO
@@ -50,18 +47,6 @@ function BurgerIngredients() {
 
     // @ts-ignore
     const isIngredientDetailsModalOpen = useSelector(store => (store.burgerCartReducer.itemModal));
-    const addBun = (item: { _id: any; image: any; name: any; price: any; }) => {
-        dispatch({
-            type: ADD_BUN,
-            item
-        })};
-    const addMain = (item: { _id: any; image: any; name: any; price: any; }) => {
-        const uniqueId = uuidv4();
-        const newItem = {...item, uniqueId}
-        dispatch({
-            type: ADD_MAIN,
-            newItem
-        })};
     const showInfo = (item: { _id: any; image: any; name: any; price: any; }) => {
         dispatch({
             type: SHOW_INFO,
@@ -98,7 +83,7 @@ function BurgerIngredients() {
                             _id: any;
                             image: any; name: any; price: any; }, index: any) =>
 
-                         <BurgerDragItem show = {showInfo} item={item} key={item._id} onAdd={addBun}/>
+                         <BurgerDragItem show = {showInfo} item={item} key={item._id}/>
 
                         )}
                     </div>
@@ -108,7 +93,7 @@ function BurgerIngredients() {
                             _id: any;
                             image: any; name: any; price: any; }, index: any) =>
 
-                            <BurgerDragItem show = {showInfo} item={item} key={item._id} onAdd={addMain}/>
+                            <BurgerDragItem show = {showInfo} item={item} key={item._id}/>
                         )}
                     </div>
                     <h2 id='main' className="text text_type_main-medium mb-2">Начинки</h2>
@@ -116,7 +101,7 @@ function BurgerIngredients() {
                         {items && items.filter((item: { type: string; }) => item.type === 'main').map((item: {
                             _id: any;
                             image: any; name: any; price: any; }, index: any) =>
-                            <BurgerDragItem show = {showInfo} item={item} key={item._id} onAdd={addMain}/>
+                            <BurgerDragItem show = {showInfo} item={item} key={item._id}/>
                         )}
                     </div>
                 </div>

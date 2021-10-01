@@ -85,12 +85,12 @@ function BurgerConstructor() {
                     <OrderDetails info={orderState.order}></OrderDetails>
                 </Modal>}
                 <div className={`mb-20`} style={{ display: 'flex', flexDirection: 'column' }}>
-                    {constructorState && constructorState.bun.map((item: { _id: React.Key | null | undefined; name: any; price: number; image: string; uniqueId: string }, index: any) =>
+                    {constructorState && constructorState.bun.map((item: any, index: any) =>
                         <ConstructorDragItem key={index} index={index} id={item.uniqueId} moveCard={moveCard} type={'top'} item={item} isLocked={true}>
                         </ConstructorDragItem>
                     )}
                     <div className={`${styles.customScroll} mb-4 mt-4`} style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginLeft: '-50px' }}>
-                        {constructorState && constructorState.main.map((item: { _id: React.Key | null | undefined; name: string; price: number; image: string; uniqueId: string }, index: any) =>
+                        {constructorState && constructorState.main.map((item: any, index: any) =>
                             <div style={{ display: 'flex' }}  key={index}>
                                 <div className='mt-7 mr-6'> <DragIcon type="primary"/></div>
                                 <ConstructorDragItem index={index}  delete={deleteItem} id={item.uniqueId} moveCard={moveCard} item={item} isLocked={false}>
@@ -98,7 +98,7 @@ function BurgerConstructor() {
                             </div>
                         )}
                     </div>
-                    {constructorState && constructorState.bun.map((item: { _id: React.Key | null | undefined; name: any; price: number; image: string; uniqueId: string }, index: any) =>
+                    {constructorState && constructorState.bun.map((item: any, index: any) =>
                         <ConstructorDragItem key={index} index={index} id={item.uniqueId} moveCard={moveCard} type={'bottom'} item={item} isLocked={true}>
                         </ConstructorDragItem>
 

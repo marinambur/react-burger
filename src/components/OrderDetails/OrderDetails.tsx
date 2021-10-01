@@ -1,14 +1,13 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import styles from "./OrderDetails.module.css";
 import {CheckMarkIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {OrderContext} from "../../services/appContext";
+import PropTypes from "prop-types";
 
 // @ts-ignore
-function OrderDetails({info}) {
-    const { response, setResponse } = useContext(OrderContext);
+function OrderDetails(props) {
     return (
         <div className={styles.box}>
-            <p className={`${styles.glow} text text_type_digits-large mb-8`}>{info.order.number}</p>
+            <p className={`${styles.glow} text text_type_digits-large mb-8`}>{props.info.order.number}</p>
             <p className="text text_type_main-medium mb-15">
                 Идентификатор заказа
             </p>
@@ -22,5 +21,17 @@ function OrderDetails({info}) {
         </div>
     );
 }
+const orderPropTypes = PropTypes.shape({
+    number: PropTypes.number.isRequired,
+});
+const info = PropTypes.shape({
+    order: orderPropTypes.isRequired,
+    name: PropTypes.string.isRequired,
+    success: PropTypes.bool,
+});
+OrderDetails.propTypes = {
+    info: info,
+
+};
 
 export default OrderDetails;

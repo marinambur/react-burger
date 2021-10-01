@@ -2,6 +2,7 @@ import React from 'react';
 import {ConstructorElement} from "@ya.praktikum/react-developer-burger-ui-components";
 import { useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
+import PropTypes from "prop-types";
 export const ItemTypes = {
     CARD: 'card',
 }
@@ -58,7 +59,7 @@ const ConstructorDragItem = (props: any) => {
     // @ts-ignore
     return (
         // @ts-ignore
-        <div index={props.key} key={props.item.index} ref={ref}>
+        <div key={props.item.index} ref={ref}>
             <ConstructorElement
                 handleClose={()=> {
                     props.delete(props.item.uniqueId)}
@@ -71,6 +72,26 @@ const ConstructorDragItem = (props: any) => {
             />
         </div>
     );
+};
+
+const itemsPropTypes = PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    uniqueId: PropTypes.string,
+    price: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    image: PropTypes.string.isRequired,
+});
+
+ConstructorDragItem.propTypes = {
+    item: itemsPropTypes.isRequired,
+    moveCard: PropTypes.func.isRequired,
+    isLocked: PropTypes.bool,
+    index: PropTypes.number.isRequired,
+    id: PropTypes.string,
+    type: PropTypes.string,
+    delete: PropTypes.func,
+    children: PropTypes.array,
+
 };
 
 export default ConstructorDragItem;
