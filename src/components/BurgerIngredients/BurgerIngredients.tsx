@@ -1,81 +1,107 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, { useEffect } from 'react';
 import styles from './BurgerIngredients.module.css';
 import customScroll from '../BurgerConstructor/BurgerConstructor.module.css';
+import {useDispatch, useSelector} from 'react-redux';
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
-import BurgerItem from "../BurgerItem/BurgerItem";
 import Modal from "../Modal/Modal";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
-import {TotalPriceContext, IngredientsContext, BurgerIngredientsContext} from '../../services/appContext';
+import {
+    getFeed,
+    ITEM_MODAL_CLOSE,
+    SHOW_INFO
+} from '../../services/actions';
+import BurgerDragItem from "../BurgerDragItem/BurgerDragItem";
 function BurgerIngredients() {
-    const [current, setCurrent] = React.useState('one');
-    const [ingredientsModal, setIngredientsModal] = useState(false);
-    const [info, setInfo] = useState(null);
-    const { totalPrice, setTotalPrice } = useContext(TotalPriceContext);
-    const { burgerIngredients, setBurgerIngredients} = useContext(BurgerIngredientsContext);
-    const { ingredients, setIngredients } = useContext(IngredientsContext);
-    const closeIngredientsModal = (e: any) => {
-            setIngredientsModal(false);
-    }
+    const [current, setCurrent] = React.useState('bun');
+    // @ts-ignore
+    const { items } = useSelector(store => (store.burgerCartReducer.allItems));
+    // @ts-ignore
+    const itemStore = useSelector(store => (store.burgerCartReducer.item));
 
-    function getIngredientPrices(array: any[]) {
-        return array.map((item) => item.type==='bun' ? item.price*2 : item.price).reduce((a, b) => a + b, 0);
-    }
-    useEffect( ()=>{setTotalPrice(getIngredientPrices(ingredients))}, [ingredients]);
-    const showIngredientsModal = (item: any) => {
-        setInfo(item);
-        if (item.type==='bun') {
-            setIngredients([...ingredients.filter(function (item) { return item.type !== "bun" }), item]);
-            } else {
-            setIngredients([...ingredients, item]);
+    const dispatch = useDispatch();
+    useEffect(()=> {
+        dispatch(getFeed())
+    }, []);
+
+    const handleScroll = () => {
+        const bunHeader = document.getElementById('buns');
+        const sauceHeader = document.getElementById('sauce');
+        const mainHeader = document.getElementById('main');
+        // @ts-ignore
+        if (bunHeader && bunHeader.getBoundingClientRect().top > 0 && bunHeader.getBoundingClientRect().top < sauceHeader.getBoundingClientRect().top) {
+            setCurrent('bun')
+            // @ts-ignore
+        } else if (sauceHeader && sauceHeader.getBoundingClientRect().top > 0 && sauceHeader.getBoundingClientRect().top < mainHeader.getBoundingClientRect().top) {
+            setCurrent('sauce')
+            }
+        else {
+            setCurrent('main')
         }
-        setIngredientsModal(true);
     }
+    useEffect(() => {
+        document.getElementById("box")?.addEventListener("scroll", handleScroll);
+        return () => {
+            document.getElementById("box")?.addEventListener("scroll", handleScroll);
+        }
+    }, [handleScroll]);
+
+    // @ts-ignore
+    const isIngredientDetailsModalOpen = useSelector(store => (store.burgerCartReducer.itemModal));
+    const showInfo = (item: { _id: any; image: any; name: any; price: any; }) => {
+        dispatch({
+            type: SHOW_INFO,
+            item
+        })};
+    const closeModal = (item: any) => {
+        dispatch({
+            type: ITEM_MODAL_CLOSE,
+        })
+    };
 
     return (
         <section>
-            {ingredientsModal && <Modal onClose={closeIngredientsModal} >
-        <IngredientDetails info={info}></IngredientDetails>
+            {isIngredientDetailsModalOpen && <Modal onClose={closeModal} >
+        <IngredientDetails info={itemStore}></IngredientDetails>
             </Modal>}
             <div className={`${styles.section} mb-5`}>
-                <Tab value="one" active={current === 'one'} onClick={setCurrent}>
+                <Tab value="one" active={current === 'bun'} onClick={setCurrent}>
                     Булки
                 </Tab>
-                <Tab value="two" active={current === 'two'} onClick={setCurrent}>
+                <Tab value="two" active={current === 'sauce'} onClick={setCurrent}>
                     Соусы
                 </Tab>
-                <Tab value="three" active={current === 'three'} onClick={setCurrent}>
+                <Tab value="three" active={current === 'main'} onClick={setCurrent}>
                     Начинки
                 </Tab>
             </div>
             <h2 className="text text_type_main-medium mb-2"></h2>
             <div className={styles.constructorContainer}>
-                <div className={`${customScroll.customScroll} ${styles.box}`}>
-                    <h2 className="text text_type_main-medium mb-2">Булки</h2>
+                <div id='box' className={`${customScroll.customScroll} ${styles.box}`}>
+                    <h2 id='buns' className="text text_type_main-medium mb-2" >Булки</h2>
                     <div className={styles.itemBox}>
-                        {burgerIngredients && burgerIngredients.filter((item: { type: string; }) => item.type === 'bun').map((item: {
+                        {items && items.filter((item: { type: string; }) => item.type === 'bun').map((item: {
                             _id: any;
                             image: any; name: any; price: any; }, index: any) =>
-                            <div key={item._id} onClick={() => {
-                                showIngredientsModal(item)}}><BurgerItem img={item.image} name={item.name} price={item.price} /></div>
+
+                         <BurgerDragItem show = {showInfo} item={item} key={item._id}/>
 
                         )}
                     </div>
-                    <h2 className="text text_type_main-medium mb-2">Соусы</h2>
+                    <h2 id='sauce' className="text text_type_main-medium mb-2">Соусы</h2>
                     <div className={styles.itemBox}>
-                        {burgerIngredients && burgerIngredients.filter((item: { type: string; }) => item.type === 'sauce').map((item: {
+                        {items && items.filter((item: { type: string; }) => item.type === 'sauce').map((item: {
                             _id: any;
                             image: any; name: any; price: any; }, index: any) =>
-                            <div key={item._id} onClick={() => {
-                                showIngredientsModal(item)}}><BurgerItem img={item.image} name={item.name} price={item.price} /></div>
+
+                            <BurgerDragItem show = {showInfo} item={item} key={item._id}/>
                         )}
                     </div>
-                    <h2 className="text text_type_main-medium mb-2">Начинки</h2>
+                    <h2 id='main' className="text text_type_main-medium mb-2">Начинки</h2>
                     <div className={styles.itemBox}>
-                        {burgerIngredients && burgerIngredients.filter((item: { type: string; }) => item.type === 'main').map((item: {
+                        {items && items.filter((item: { type: string; }) => item.type === 'main').map((item: {
                             _id: any;
                             image: any; name: any; price: any; }, index: any) =>
-                            <div key={item._id} onClick={() => {
-                                showIngredientsModal(item)}}><BurgerItem img={item.image} name={item.name} price={item.price} /></div>
+                            <BurgerDragItem show = {showInfo} item={item} key={item._id}/>
                         )}
                     </div>
                 </div>
