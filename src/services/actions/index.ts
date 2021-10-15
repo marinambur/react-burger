@@ -1,5 +1,6 @@
 import {url} from "../../components/App/App";
 import {postUrl} from '../../components/BurgerConstructor/BurgerConstructor'
+import {deleteCookie, getCookie, setCookie} from "../../components/utils";
 export const DELETE_ITEM = 'DELETE_ITEM';
 export const ADD_BUN = 'ADD_BUN';
 export const ADD_MAIN = 'ADD_MAIN';
@@ -14,6 +15,14 @@ export const ITEM_MODAL_CLOSE = 'ITEM_MODAL_CLOSE';
 export const ORDER_MODAL_CLOSE='ORDER_MODAL_CLOSE';
 export const DRAG_SORT='DRAG_SORT';
 export const SET_TOTAL_PRICE = 'SET_TOTAL_PRICE';
+export const SET_REGISTER_REQUEST='SET_REGISTER_REQUEST';
+export const SET_REGISTER_REQUEST_SUCCESS='SET_REGISTER_REQUEST_SUCCESS';
+export const SET_REGISTER_REQUEST_FAILED = 'SET_REGISTER_REQUEST_FAILED';
+export const SET_LOGIN_REQUEST='SET_REGISTER_REQUEST';
+export const SET_LOGIN_REQUEST_SUCCESS='SET_REGISTER_REQUEST_SUCCESS';
+export const SET_LOGIN_REQUEST_FAILED = 'SET_REGISTER_REQUEST_FAILED';
+export const SET_LOGOUT_SUCCESS = 'SET_LOGOUT_SUCCESS';
+export const SET_CHECK_REQUEST = 'SET_CHECK_REQUEST';
 
 
 export function getFeed() {
@@ -82,3 +91,249 @@ export function postData(ingredients) {
             });
     }
 }
+// @ts-ignore
+export function registerRequest(form) {
+    // @ts-ignore
+    return function(dispatch) {
+        dispatch({
+            type: SET_REGISTER_REQUEST
+        })
+        fetch('https://norma.nomoreparties.space/api/auth/register', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(form),
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer'
+        })
+            .then(res => {
+                if (!res.ok && res.status >= 500) {
+                    throw Error(res.statusText);
+                }
+                return res.json();
+            })
+            .then((data) => {
+                if (data.success) {
+                    dispatch({
+                        type: SET_REGISTER_REQUEST_SUCCESS,
+                        // @ts-ignore
+                        info: data.user
+                    })
+                    setCookie('accessToken', data.accessToken, { path: '/' });
+                    setCookie('refreshToken', data.refreshToken, { path: '/' });
+                }})
+            .catch((error) => {
+                dispatch({
+                    type: SET_REGISTER_REQUEST_FAILED
+                })
+            });
+    }
+}
+
+// @ts-ignore
+export function loginRequest(form) {
+    // @ts-ignore
+    return function(dispatch) {
+        dispatch({
+            type: SET_LOGIN_REQUEST
+        })
+        fetch('https://norma.nomoreparties.space/api/auth/login', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(form),
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer'
+        })
+            .then(res => {
+                if (!res.ok && res.status >= 500) {
+                    throw Error(res.statusText);
+                }
+                return res.json();
+            })
+            .then((data) => {
+                if (data.success) {
+                    dispatch({
+                        type: SET_LOGIN_REQUEST_SUCCESS,
+                        info: data.user
+                    })
+                    setCookie('accessToken', data.accessToken, { path: '/' });
+                    setCookie('refreshToken', data.refreshToken, { path: '/' });
+                }})
+            .catch((error) => {
+                dispatch({
+                    type: SET_LOGIN_REQUEST_FAILED
+                })
+            });
+    }
+}
+
+// @ts-ignore
+export function logoutRequest() {
+    // @ts-ignore
+    return function(dispatch) {
+        dispatch({
+            type: SET_REGISTER_REQUEST
+        })
+        fetch('https://norma.nomoreparties.space/api/auth/logout', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({token: getCookie('refreshToken')}),
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer'
+        })
+            .then(res => {
+                if (!res.ok && res.status >= 500) {
+                    throw Error(res.statusText);
+                }
+                return res.json();
+            })
+            .then((data) => {
+                if (data.success) {
+                    dispatch({
+                        type: SET_LOGOUT_SUCCESS,
+                        info: {}
+                    })
+                   deleteCookie('refreshToken');
+                    deleteCookie('accessToken');
+                }})
+            .catch((error) => {
+                dispatch({
+                    type: SET_REGISTER_REQUEST_FAILED
+                })
+            });
+    }
+}
+
+
+export function userRequest() {
+    // @ts-ignore
+    return function(dispatch) {
+        dispatch({
+            type: SET_CHECK_REQUEST //консоль срабатывает
+        })
+
+        fetch('https://norma.nomoreparties.space/api/auth/user', {
+            method: 'GET',
+            // @ts-ignore
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': getCookie('accessToken'),
+            }
+        })
+            .then(res => {
+                return res.json();
+            })
+            .then((data) => {
+                console.log(data) //консоль срабатывает
+                if (!data.success) {
+                    dispatch(refreshToken())
+                }
+                if (data.success) {
+                    console.log(data, 'data1') //консоль срабатывает
+                    dispatch({
+                        type: SET_LOGIN_REQUEST, //консоль НЕ срабатывает
+                    })
+                }})
+            .catch((error) => {
+              console.log(error.message)
+            });
+    }
+}
+
+export function userChangeRequest(form: any) {
+    // @ts-ignore
+    return function(dispatch) {
+        dispatch({
+            type: SET_REGISTER_REQUEST
+        })
+        // @ts-ignore
+        // @ts-ignore
+        fetch('https://norma.nomoreparties.space/api/auth/user', {
+            method: 'PATCH',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            // @ts-ignore
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': getCookie('accessToken'),
+            },
+            body: JSON.stringify(form),
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer'
+        })
+            .then(res => {
+                return res.json();
+            })
+            .then((data) => {
+                console.log(data)
+                if (!data.success) {
+                    dispatch(refreshToken())
+                }
+                if (data.success) {
+                    dispatch({
+                        type: SET_REGISTER_REQUEST_SUCCESS,
+                        info: data.user
+                    })
+                }})
+            .catch((error) => {
+                console.log(error.message)
+            });
+    }
+}
+
+export function refreshToken() {
+    // @ts-ignore
+    return function(dispatch) {
+        // @ts-ignore
+        fetch(`https://norma.nomoreparties.space/api/auth/token`, {
+            method: "POST",
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            // @ts-ignore
+            headers: {
+                'Content-Type': 'application/json'
+
+            },
+            body: JSON.stringify({
+                token: getCookie('refreshToken')
+            }),
+        })
+            .then(res => {
+                return res.json();
+            })
+            .then((data) => {
+                if (data.success) {
+                    dispatch({
+                        type: SET_REGISTER_REQUEST_SUCCESS,
+                        // @ts-ignore
+                        info: data.user
+                    })
+                    setCookie('accessToken', data.accessToken, { path: '/' });
+                    setCookie('refreshToken', data.refreshToken, { path: '/' });
+                    dispatch(userRequest())
+                }})
+            .catch((error) => {
+                console.log(error.message)
+            });
+    }
+}
+
+

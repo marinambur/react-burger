@@ -19,7 +19,7 @@ ReactDOM.render(
       <DndProvider backend={HTML5Backend}>
           <Provider store={store}>
                 <App />
-                <div id="modals"></div>
+
           </Provider>
       </DndProvider>
   </React.StrictMode>,

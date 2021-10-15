@@ -10,9 +10,14 @@ import {
     SET_ORDER,
     SET_ORDER_SUCCESS,
     SET_ORDER_FAILED,
+    SET_REGISTER_REQUEST,
+    SET_REGISTER_REQUEST_SUCCESS,
+    SET_REGISTER_REQUEST_FAILED,
     ORDER_MODAL_CLOSE,
     DRAG_SORT,
     SET_TOTAL_PRICE,
+    SET_LOGOUT_SUCCESS, SET_LOGIN_REQUEST,
+    SET_CHECK_REQUEST
 
 } from '../actions';
 
@@ -27,6 +32,10 @@ const initialState = {
     order: {    orderRequest: false,
         orderRequestFailed: false,
         order: {}},
+    reg: {    regRequest: false, isChecked: false,
+        regRequestFailed: false,
+        user: {}, authorization: false, login: false, loginRequest: false,
+        loginRequestFailed: false,},
     orderModal: false,
     totalPrice: 0,
 
@@ -50,7 +59,7 @@ export const burgerCartReducer = (state = initialState, action) => {
         }
         case SHOW_INFO: {
             // @ts-ignore
-            return { ...state, item: action.item, itemModal: true };
+            return { ...state, itemModal: true };
         }
         case GET_FEED: {
             return {
@@ -64,6 +73,26 @@ export const burgerCartReducer = (state = initialState, action) => {
                 order: {...state.order, orderRequest: true, orderRequestFailed: false},
             };
         }
+        case SET_REGISTER_REQUEST: {
+            return {
+                ...state,
+                reg: {...state.reg, regRequest: true, regRequestFailed: false},
+            };
+        }
+        case SET_CHECK_REQUEST: {
+            console.log(state, 'checkReq')//работает
+            return {
+                ...state,
+                reg: {...state.reg},
+            };
+        }
+        case SET_LOGIN_REQUEST: {
+            console.log(state, 'state')//не работает
+            return {
+                ...state,
+                reg: {...state.reg, loginRequest: true, loginRequestFailed: false, login: true, isChecked: true},
+            };
+        }
         case SET_ORDER_SUCCESS: {
             return {
                 ...state,
@@ -71,11 +100,29 @@ export const burgerCartReducer = (state = initialState, action) => {
                 orderModal: true,
             };
         }
+        case SET_REGISTER_REQUEST_SUCCESS: {
+            return {
+                ...state,
+                reg: {...state.reg, user: action.info, regRequestFailed: false, authorization: true, isChecked: true},
+            };
+        }
+        case SET_LOGOUT_SUCCESS: {
+            return {
+                ...state,
+                reg: {...state.reg, user: action.info, regRequestFailed: false, authorization: false, login: false},
+            };
+        }
         case SET_ORDER_FAILED: {
             return {
                 ...state,
                 order: {...state.order, orderRequestFailed: true, orderRequest: false},
                 orderModal: false,
+            };
+        }
+        case SET_REGISTER_REQUEST_FAILED: {
+            return {
+                ...state,
+                reg: {...state.reg, regRequestFailed: true, regRequest: false, isChecked: true},
             };
         }
         case GET_FEED_SUCCESS: {
@@ -93,7 +140,6 @@ export const burgerCartReducer = (state = initialState, action) => {
         case ITEM_MODAL_CLOSE: {
             return {
                 ...state,
-                item: [],
                 itemModal: false,
             };
         }

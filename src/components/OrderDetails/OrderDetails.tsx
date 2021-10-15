@@ -3,8 +3,10 @@ import styles from "./OrderDetails.module.css";
 import {CheckMarkIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
 
+
 // @ts-ignore
 function OrderDetails(props) {
+    let id = 4;
     return (
         <div className={styles.box}>
             <p className={`${styles.glow} text text_type_digits-large mb-8`}>{props.info.order.number}</p>

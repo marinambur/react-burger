@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import styles from './BurgerIngredients.module.css';
+import {Link, useLocation} from 'react-router-dom';
 import customScroll from '../BurgerConstructor/BurgerConstructor.module.css';
 import {useDispatch, useSelector} from 'react-redux';
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
@@ -16,13 +17,11 @@ function BurgerIngredients() {
     // @ts-ignore
     const { items } = useSelector(store => (store.burgerCartReducer.allItems));
     // @ts-ignore
-    const itemStore = useSelector(store => (store.burgerCartReducer.item));
-
+    const location = useLocation();
     const dispatch = useDispatch();
     useEffect(()=> {
         dispatch(getFeed())
     }, []);
-
     const handleScroll = () => {
         const bunHeader = document.getElementById('buns');
         const sauceHeader = document.getElementById('sauce');
@@ -47,10 +46,9 @@ function BurgerIngredients() {
 
     // @ts-ignore
     const isIngredientDetailsModalOpen = useSelector(store => (store.burgerCartReducer.itemModal));
-    const showInfo = (item: { _id: any; image: any; name: any; price: any; }) => {
+    const showInfo = () => {
         dispatch({
             type: SHOW_INFO,
-            item
         })};
     const closeModal = (item: any) => {
         dispatch({
@@ -60,9 +58,9 @@ function BurgerIngredients() {
 
     return (
         <section>
-            {isIngredientDetailsModalOpen && <Modal onClose={closeModal} >
-        <IngredientDetails info={itemStore}></IngredientDetails>
-            </Modal>}
+        {/*    {isIngredientDetailsModalOpen && <Modal onClose={closeModal} >*/}
+        {/*<IngredientDetails info={itemStore}></IngredientDetails>*/}
+        {/*    </Modal>}*/}
             <div className={`${styles.section} mb-5`}>
                 <Tab value="one" active={current === 'bun'} onClick={setCurrent}>
                     Булки
@@ -82,8 +80,12 @@ function BurgerIngredients() {
                         {items && items.filter((item: { type: string; }) => item.type === 'bun').map((item: {
                             _id: any;
                             image: any; name: any; price: any; }, index: any) =>
-
-                         <BurgerDragItem show = {showInfo} item={item} key={item._id}/>
+                            <Link key={item._id} to={{
+                                pathname: `/ingredients/${item._id}`,
+                                state: { background: location }
+                            }}>
+                         <BurgerDragItem item={item} key={item._id}/>
+                            </Link>
 
                         )}
                     </div>
@@ -93,7 +95,7 @@ function BurgerIngredients() {
                             _id: any;
                             image: any; name: any; price: any; }, index: any) =>
 
-                            <BurgerDragItem show = {showInfo} item={item} key={item._id}/>
+                            <BurgerDragItem  item={item} key={item._id}/>
                         )}
                     </div>
                     <h2 id='main' className="text text_type_main-medium mb-2">Начинки</h2>
@@ -101,7 +103,7 @@ function BurgerIngredients() {
                         {items && items.filter((item: { type: string; }) => item.type === 'main').map((item: {
                             _id: any;
                             image: any; name: any; price: any; }, index: any) =>
-                            <BurgerDragItem show = {showInfo} item={item} key={item._id}/>
+                            <BurgerDragItem  item={item} key={item._id}/>
                         )}
                     </div>
                 </div>

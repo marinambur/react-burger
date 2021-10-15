@@ -1,0 +1,19 @@
+.container {
+    display: flex;
+    justify-content: flex-start;
+    padding: 5% 10%;
+}
+.left {
+    display: flex;
+    flex-direction: column;
+}
+.right {
+
+}
+.navLink {
+    color: #8585AD;
+    text-decoration: none;
+}
+.activeLink {
+    color: #F2F2F3;
+}

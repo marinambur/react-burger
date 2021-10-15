@@ -4,9 +4,13 @@ import styles from './Modal.module.css';
 import {CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
 import ModalOverlay from "../ModalOverlay/ModalOverlay";
+import {useHistory, useParams} from "react-router-dom";
 
 
 function Modal(props: any) {
+    let history = useHistory();
+    // @ts-ignore
+    let { id } = useParams();
     const modalRoot = document.getElementById("modals")!;
     const closeOnEsc = (e: KeyboardEvent) => {
         if (e.key === 'Escape') {
