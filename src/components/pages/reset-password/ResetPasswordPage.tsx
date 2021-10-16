@@ -18,6 +18,7 @@ export function ResetPasswordPage() {
     const onChange = (e: { target: { name: any; value: any; }; }) => {
         setFormValue({ ...form, [e.target.name]: e.target.value });
     };
+    const isEmail = localStorage.getItem('email');
     let resetPassword = useCallback(
         e => {
             e.preventDefault();
@@ -25,6 +26,15 @@ export function ResetPasswordPage() {
         },
         [ form, resetPasswordRequest]
     );
+    if (isEmail==='false') {
+        return (
+            <Redirect
+                to={{
+                    pathname: '/forgot-password'
+                }}
+            />
+        );
+    }
     if (reset) {
         return (
             <Redirect

@@ -206,7 +206,8 @@ export function logoutRequest() {
                         type: SET_LOGOUT_SUCCESS,
                         info: {}
                     })
-                   deleteCookie('refreshToken');
+                    localStorage.setItem('email', 'false');
+                    deleteCookie('refreshToken');
                     deleteCookie('accessToken');
                 }})
             .catch((error) => {
@@ -361,6 +362,7 @@ export function forgotPasswordRequest(form) {
             })
             .then((data) => {
                     if (data.success) {
+                        localStorage.setItem('email', 'true');
                         dispatch({
                             type: SET_FORGOT_REQUEST,
                         })
