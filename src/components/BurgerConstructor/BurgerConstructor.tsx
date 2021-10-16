@@ -47,7 +47,13 @@ function BurgerConstructor() {
         return {ingredients: array.map((item) => item._id)};
     }
     const dispatch = useDispatch();
+    // @ts-ignore
+    const auth = useSelector(store => (store.burgerCartReducer.reg.login));
     const makeOrder = () => {
+        if (!auth) {
+            alert('Оформить заказ может только авторизованный пользователь!');
+            return
+        }
         if (constructorState.bun.length) {
             const ingredientsIds = getIngredientIds(constructorState.bun).ingredients.concat(getIngredientIds(constructorState.main).ingredients);
             // @ts-ignore

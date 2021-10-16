@@ -1,16 +1,39 @@
 
-import React from 'react';
+import React, {useCallback, useState} from 'react';
 import styles from './reset-password.module.css';
 import {Button, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
-import {Link, Redirect} from "react-router-dom";
-import {useSelector} from "react-redux";
+import {Link, Redirect, useHistory} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {forgotPasswordRequest, resetPasswordRequest} from "../../../services/actions";
 
 export function ResetPasswordPage() {
-    const [value, setValue] = React.useState('');
-    const [newPasswordValue, setNewPasswordValue] = React.useState('');
+    const [form, setFormValue] = useState({ password: '', token: ''});
     const inputRef = React.useRef(null);
+    const history = useHistory();
+    const dispatch = useDispatch();
+    // @ts-ignore
+    const reset = useSelector(store => (store.burgerCartReducer.reg.reset));
     // @ts-ignore
     const auth = useSelector(store => (store.burgerCartReducer.reg.login));
+    const onChange = (e: { target: { name: any; value: any; }; }) => {
+        setFormValue({ ...form, [e.target.name]: e.target.value });
+    };
+    let resetPassword = useCallback(
+        e => {
+            e.preventDefault();
+            dispatch(resetPasswordRequest(form)) ;
+        },
+        [ form, resetPasswordRequest]
+    );
+    if (reset) {
+        return (
+            <Redirect
+                to={{
+                    pathname: '/login'
+                }}
+            />
+        );
+    }
     if (auth) {
         return (
             <Redirect
@@ -28,9 +51,9 @@ export function ResetPasswordPage() {
                     <Input
                         type={'text'}
                         placeholder={'Введите новый пароль'}
-                        onChange={e => setNewPasswordValue(e.target.value)}
-                        value={newPasswordValue}
-                        name={'name'}
+                        onChange={onChange}
+                        value={form.password}
+                        name={'password'}
                         error={false}
                         ref={inputRef}
                         errorText={'Ошибка'}
@@ -41,9 +64,9 @@ export function ResetPasswordPage() {
                     <Input
                         type={'text'}
                         placeholder={'Введите код из письма'}
-                        onChange={e => setValue(e.target.value)}
-                        value={value}
-                        name={'name'}
+                        onChange={onChange}
+                        value={form.token}
+                        name={'token'}
                         error={false}
                         ref={inputRef}
                         errorText={'Ошибка'}
@@ -51,7 +74,7 @@ export function ResetPasswordPage() {
                     />
                 </div>
                 <div className={'mb-20'}>
-                    <Button type="primary" size="large">
+                    <Button type="primary" size="large" onClick={resetPassword}>
                         Сохранить
                     </Button>
                 </div>

@@ -80,7 +80,7 @@ function BurgerIngredients() {
                         {items && items.filter((item: { type: string; }) => item.type === 'bun').map((item: {
                             _id: any;
                             image: any; name: any; price: any; }, index: any) =>
-                            <Link key={item._id} to={{
+                            <Link  className={styles.link} key={item._id} to={{
                                 pathname: `/ingredients/${item._id}`,
                                 state: { background: location }
                             }}>
@@ -94,8 +94,12 @@ function BurgerIngredients() {
                         {items && items.filter((item: { type: string; }) => item.type === 'sauce').map((item: {
                             _id: any;
                             image: any; name: any; price: any; }, index: any) =>
-
+                            <Link  className={styles.link} key={item._id} to={{
+                                pathname: `/ingredients/${item._id}`,
+                                state: { background: location }
+                            }}>
                             <BurgerDragItem  item={item} key={item._id}/>
+                            </Link>
                         )}
                     </div>
                     <h2 id='main' className="text text_type_main-medium mb-2">Начинки</h2>
@@ -103,7 +107,12 @@ function BurgerIngredients() {
                         {items && items.filter((item: { type: string; }) => item.type === 'main').map((item: {
                             _id: any;
                             image: any; name: any; price: any; }, index: any) =>
+                            <Link className={styles.link} key={item._id} to={{
+                                pathname: `/ingredients/${item._id}`,
+                                state: { background: location }
+                            }}>
                             <BurgerDragItem  item={item} key={item._id}/>
+                            </Link>
                         )}
                     </div>
                 </div>

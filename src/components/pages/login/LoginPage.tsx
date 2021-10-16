@@ -25,7 +25,13 @@ export function LoginPage() {
         e => {
             e.preventDefault();
             dispatch(loginRequest(form)) ;
-            history.replace({ pathname: '/' });
+            if (!auth) {
+                return
+            }
+            if(auth) {
+                history.replace({ pathname: '/' });
+            }
+
 
         },
         [ form, loginRequest]

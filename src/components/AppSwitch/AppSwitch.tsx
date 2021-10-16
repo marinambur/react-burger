@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import AppHeader from "../AppHeader/AppHeader";
 import AppMain from "../AppMain/AppMain";
-import {BrowserRouter as Router, Route, Switch, useHistory, useLocation} from 'react-router-dom';
+import {BrowserRouter as Router, Redirect, Route, Switch, useHistory, useLocation} from 'react-router-dom';
 import { LoginPage } from '../pages/login/LoginPage';
 import {RegisterPage} from "../pages/register/RegisterPage";
 import {ResetPasswordPage} from "../pages/reset-password/ResetPasswordPage";
@@ -17,8 +17,9 @@ export const url = 'https://norma.nomoreparties.space/api/ingredients';
 function AppSwitch() {
     let location = useLocation();
     let history = useHistory();
+    const action = history.action ==='PUSH' || history.action ==='REPLACE';
     // @ts-ignore
-    let background = location.state && location.state.background;
+    let background = action && location.state && location.state.background;
 
     // @ts-ignore
     const checking = useSelector(store => (store.burgerCartReducer.reg.isChecked));
@@ -29,47 +30,43 @@ function AppSwitch() {
     useEffect(()=> {
         dispatch(userRequest());
     }, []);
-
-
-
-
     let back = (e: any) => {
         history.goBack();
     };
 
-
-
-
     return (
-        <>
-                <AppHeader />
-                <Switch location={background || location}>
-                    <Route path="/login">
-                        <LoginPage />
-                    </Route>
-                    <Route path="/register">
-                        <RegisterPage />
-                    </Route>
-                    <Route path="/forgot-password">
-                        <ForgotPasswordPage />
-                    </Route>
-                    <Route path="/reset-password">
-                        <ResetPasswordPage />
-                    </Route>
-                    <ProtectedRoute path="/profile">
-                        <ProfilePage />
-                    </ProtectedRoute>
-                    <Route path="/ingredients/:id" children={<IngredientPage />} />
-                    <Route path="/" exact={true}>
-                        <AppMain/>
-                    </Route>
-                </Switch>
-                {background && <Route path="/ingredients/:id">
-                    <Modal onClose={back} >
-                        <IngredientDetails ></IngredientDetails>
-                    </Modal>
-                </Route>}
-            </>
+        <> {checking &&    <>
+            <AppHeader />
+            <Switch location={background || location}>
+                <Route path="/login">
+                    <LoginPage />
+                </Route>
+                <Route path="/register">
+                    <RegisterPage />
+                </Route>
+                <Route path="/forgot-password">
+                    <ForgotPasswordPage />
+                </Route>
+                <Route path="/reset-password">
+                    <ResetPasswordPage />
+                </Route>
+                <ProtectedRoute path="/profile">
+                    <ProfilePage />
+                </ProtectedRoute>
+                <Route path="/ingredients/:id" children={<IngredientPage />} />
+                <Route path="/" exact={true}>
+                    <AppMain/>
+                </Route>
+            </Switch>
+            {background && <Route path="/ingredients/:id">
+                <Modal onClose={back} >
+                    <IngredientDetails ></IngredientDetails>
+                </Modal>
+            </Route>}
+        </> }
+
+
+        </>
 
 
     );

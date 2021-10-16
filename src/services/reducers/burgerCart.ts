@@ -12,12 +12,11 @@ import {
     SET_ORDER_FAILED,
     SET_REGISTER_REQUEST,
     SET_REGISTER_REQUEST_SUCCESS,
-    SET_REGISTER_REQUEST_FAILED,
     ORDER_MODAL_CLOSE,
     DRAG_SORT,
     SET_TOTAL_PRICE,
     SET_LOGOUT_SUCCESS, SET_LOGIN_REQUEST,
-    SET_CHECK_REQUEST
+    SET_CHECK_REQUEST, SET_LOGIN_REQUEST_FAILED, SET_FORGOT_REQUEST, SET_RESET_REQUEST
 
 } from '../actions';
 
@@ -35,7 +34,7 @@ const initialState = {
     reg: {    regRequest: false, isChecked: false,
         regRequestFailed: false,
         user: {}, authorization: false, login: false, loginRequest: false,
-        loginRequestFailed: false,},
+        loginRequestFailed: false, forgotSuccess: false, reset: false},
     orderModal: false,
     totalPrice: 0,
 
@@ -80,14 +79,12 @@ export const burgerCartReducer = (state = initialState, action) => {
             };
         }
         case SET_CHECK_REQUEST: {
-            console.log(state, 'checkReq')//работает
             return {
                 ...state,
                 reg: {...state.reg},
             };
         }
         case SET_LOGIN_REQUEST: {
-            console.log(state, 'state')//не работает
             return {
                 ...state,
                 reg: {...state.reg, loginRequest: true, loginRequestFailed: false, login: true, isChecked: true},
@@ -119,10 +116,10 @@ export const burgerCartReducer = (state = initialState, action) => {
                 orderModal: false,
             };
         }
-        case SET_REGISTER_REQUEST_FAILED: {
+        case SET_LOGIN_REQUEST_FAILED: {
             return {
                 ...state,
-                reg: {...state.reg, regRequestFailed: true, regRequest: false, isChecked: true},
+                reg: {...state.reg, regRequestFailed: true, regRequest: false, isChecked: true, authorization: false, login: false},
             };
         }
         case GET_FEED_SUCCESS: {
@@ -164,6 +161,18 @@ export const burgerCartReducer = (state = initialState, action) => {
                 ...state,
                 totalPrice: action.total
             };
+        }
+        case SET_FORGOT_REQUEST: {
+            return {
+                ...state,
+                reg: {...state.reg, forgotSuccess: true},
+            }
+        }
+        case SET_RESET_REQUEST: {
+            return {
+                ...state,
+                reg: {...state.reg, reset: true},
+            }
         }
         default: {
             return state;

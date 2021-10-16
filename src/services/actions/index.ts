@@ -18,11 +18,13 @@ export const SET_TOTAL_PRICE = 'SET_TOTAL_PRICE';
 export const SET_REGISTER_REQUEST='SET_REGISTER_REQUEST';
 export const SET_REGISTER_REQUEST_SUCCESS='SET_REGISTER_REQUEST_SUCCESS';
 export const SET_REGISTER_REQUEST_FAILED = 'SET_REGISTER_REQUEST_FAILED';
-export const SET_LOGIN_REQUEST='SET_REGISTER_REQUEST';
-export const SET_LOGIN_REQUEST_SUCCESS='SET_REGISTER_REQUEST_SUCCESS';
-export const SET_LOGIN_REQUEST_FAILED = 'SET_REGISTER_REQUEST_FAILED';
+export const SET_LOGIN_REQUEST='SET_LOGIN_REQUEST';
+export const SET_LOGIN_REQUEST_SUCCESS='SET_LOGIN_REQUEST_SUCCESS';
+export const SET_LOGIN_REQUEST_FAILED = 'SET_LOGIN_REQUEST_FAILED';
 export const SET_LOGOUT_SUCCESS = 'SET_LOGOUT_SUCCESS';
 export const SET_CHECK_REQUEST = 'SET_CHECK_REQUEST';
+export const SET_FORGOT_REQUEST = 'SET_FORGOT_REQUEST';
+export const SET_RESET_REQUEST = 'SET_RESET_REQUEST';
 
 
 export function getFeed() {
@@ -95,9 +97,6 @@ export function postData(ingredients) {
 export function registerRequest(form) {
     // @ts-ignore
     return function(dispatch) {
-        dispatch({
-            type: SET_REGISTER_REQUEST
-        })
         fetch('https://norma.nomoreparties.space/api/auth/register', {
             method: 'POST',
             mode: 'cors',
@@ -138,9 +137,6 @@ export function registerRequest(form) {
 export function loginRequest(form) {
     // @ts-ignore
     return function(dispatch) {
-        dispatch({
-            type: SET_LOGIN_REQUEST
-        })
         fetch('https://norma.nomoreparties.space/api/auth/login', {
             method: 'POST',
             mode: 'cors',
@@ -162,16 +158,22 @@ export function loginRequest(form) {
             .then((data) => {
                 if (data.success) {
                     dispatch({
-                        type: SET_LOGIN_REQUEST_SUCCESS,
+                        type: SET_LOGIN_REQUEST,
                         info: data.user
                     })
                     setCookie('accessToken', data.accessToken, { path: '/' });
                     setCookie('refreshToken', data.refreshToken, { path: '/' });
-                }})
+                }
+                if (!data.success) {
+                    alert(data.message)
+                    dispatch({
+                        type: SET_LOGIN_REQUEST_FAILED
+                    })
+                }
+            }
+            )
             .catch((error) => {
-                dispatch({
-                    type: SET_LOGIN_REQUEST_FAILED
-                })
+                alert(error)
             });
     }
 }
@@ -180,9 +182,6 @@ export function loginRequest(form) {
 export function logoutRequest() {
     // @ts-ignore
     return function(dispatch) {
-        dispatch({
-            type: SET_REGISTER_REQUEST
-        })
         fetch('https://norma.nomoreparties.space/api/auth/logout', {
             method: 'POST',
             mode: 'cors',
@@ -211,9 +210,7 @@ export function logoutRequest() {
                     deleteCookie('accessToken');
                 }})
             .catch((error) => {
-                dispatch({
-                    type: SET_REGISTER_REQUEST_FAILED
-                })
+              console.log(error)
             });
     }
 }
@@ -223,7 +220,7 @@ export function userRequest() {
     // @ts-ignore
     return function(dispatch) {
         dispatch({
-            type: SET_CHECK_REQUEST //консоль срабатывает
+            type: SET_CHECK_REQUEST
         })
 
         fetch('https://norma.nomoreparties.space/api/auth/user', {
@@ -239,14 +236,12 @@ export function userRequest() {
                 return res.json();
             })
             .then((data) => {
-                console.log(data) //консоль срабатывает
                 if (!data.success) {
                     dispatch(refreshToken())
                 }
                 if (data.success) {
-                    console.log(data, 'data1') //консоль срабатывает
                     dispatch({
-                        type: SET_LOGIN_REQUEST, //консоль НЕ срабатывает
+                        type: SET_LOGIN_REQUEST,
                     })
                 }})
             .catch((error) => {
@@ -258,9 +253,6 @@ export function userRequest() {
 export function userChangeRequest(form: any) {
     // @ts-ignore
     return function(dispatch) {
-        dispatch({
-            type: SET_REGISTER_REQUEST
-        })
         // @ts-ignore
         // @ts-ignore
         fetch('https://norma.nomoreparties.space/api/auth/user', {
@@ -284,11 +276,11 @@ export function userChangeRequest(form: any) {
             .then((data) => {
                 console.log(data)
                 if (!data.success) {
-                    dispatch(refreshToken())
+                    alert(data.message)
                 }
                 if (data.success) {
                     dispatch({
-                        type: SET_REGISTER_REQUEST_SUCCESS,
+                        type: SET_LOGIN_REQUEST,
                         info: data.user
                     })
                 }})
@@ -322,16 +314,103 @@ export function refreshToken() {
             .then((data) => {
                 if (data.success) {
                     dispatch({
-                        type: SET_REGISTER_REQUEST_SUCCESS,
+                        type: SET_LOGIN_REQUEST,
                         // @ts-ignore
                         info: data.user
                     })
                     setCookie('accessToken', data.accessToken, { path: '/' });
                     setCookie('refreshToken', data.refreshToken, { path: '/' });
                     dispatch(userRequest())
-                }})
+                }
+                if (!data.success) {
+                    dispatch({
+                        type: SET_LOGIN_REQUEST_FAILED,
+                    })
+                }
+            })
             .catch((error) => {
                 console.log(error.message)
+                dispatch({
+                    type: SET_LOGIN_REQUEST_FAILED
+                })
+            });
+    }
+}
+
+// @ts-ignore
+export function forgotPasswordRequest(form) {
+    // @ts-ignore
+    return function(dispatch) {
+        fetch('https://norma.nomoreparties.space/api/password-reset', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(form),
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer'
+        })
+            .then(res => {
+                if (!res.ok && res.status >= 500) {
+                    throw Error(res.statusText);
+                }
+                return res.json();
+            })
+            .then((data) => {
+                    if (data.success) {
+                        dispatch({
+                            type: SET_FORGOT_REQUEST,
+                        })
+                    }
+                    if (!data.success) {
+                        alert(data.message)
+                    }
+                }
+            )
+            .catch((error) => {
+                console.log(error)
+            });
+    }
+}
+
+// @ts-ignore
+export function resetPasswordRequest(form) {
+    // @ts-ignore
+    return function(dispatch) {
+        fetch('https://norma.nomoreparties.space/api/password-reset/reset', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(form),
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer'
+        })
+            .then(res => {
+                if (!res.ok && res.status >= 500) {
+                    throw Error(res.statusText);
+                }
+                return res.json();
+            })
+            .then((data) => {
+                    if (data.success) {
+                        dispatch({
+                            type: SET_RESET_REQUEST,
+                        })
+                    }
+                    if (!data.success) {
+                        alert(data.message)
+                    }
+                }
+            )
+            .catch((error) => {
+                console.log(error)
             });
     }
 }

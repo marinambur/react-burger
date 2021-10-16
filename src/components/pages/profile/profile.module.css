@@ -6,6 +6,7 @@
 .left {
     display: flex;
     flex-direction: column;
+    width: 320px;
 }
 .right {
 
@@ -13,7 +14,10 @@
 .navLink {
     color: #8585AD;
     text-decoration: none;
+    cursor: pointer;
+    padding: 10px 0;
 }
+
 .activeLink {
     color: #F2F2F3;
 }

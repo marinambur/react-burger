@@ -1,15 +1,42 @@
 
-import React from 'react';
+import React, {useCallback, useState} from 'react';
 import styles from './forgot-password.module.css';
 import {Button, EmailInput, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
-import {Link, Redirect} from "react-router-dom";
-import {useSelector} from "react-redux";
+import {Link, Redirect, useHistory} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {forgotPasswordRequest, userChangeRequest} from "../../../services/actions";
 
 export function ForgotPasswordPage() {
-    const [value, setValue] = React.useState('');
+    const [form, setFormValue] = useState({ email: '' });
     const inputRef = React.useRef(null);
+    const dispatch = useDispatch();
     // @ts-ignore
     const auth = useSelector(store => (store.burgerCartReducer.reg.login));
+    // @ts-ignore
+    const email = useSelector(store => (store.burgerCartReducer.reg.forgotSuccess));
+    const history = useHistory();
+    const onChange = (e: { target: { name: any; value: any; }; }) => {
+        setFormValue({ ...form, [e.target.name]: e.target.value });
+    };
+    let sendEmail = useCallback(
+        e => {
+            e.preventDefault();
+            dispatch(forgotPasswordRequest(form)) ;
+            if(!email) {
+                history.replace({ pathname: '/reset-password' });
+            }
+        },
+        [ form, forgotPasswordRequest]
+    );
+    if (email) {
+        return (
+            <Redirect
+                to={{
+                    pathname: '/reset-password'
+                }}
+            />
+        );
+    }
     if (auth) {
         return (
             <Redirect
@@ -28,9 +55,9 @@ export function ForgotPasswordPage() {
                     <Input
                         type={'text'}
                         placeholder={'Укажите e-mail'}
-                        onChange={e => setValue(e.target.value)}
-                        value={value}
-                        name={'name'}
+                        onChange={onChange}
+                        value={form.email}
+                        name={'email'}
                         error={false}
                         ref={inputRef}
                         errorText={'Ошибка'}
@@ -38,7 +65,7 @@ export function ForgotPasswordPage() {
                     />
                 </div>
                 <div className={'mb-20'}>
-                    <Button type="primary" size="large">
+                    <Button type="primary" size="large" onClick={sendEmail}>
                         Восстановить
                     </Button>
                 </div>

@@ -1,50 +1,63 @@
 import React, {useCallback, useState} from 'react';
 import styles from './profile.module.css';
-import {NavLink, useHistory} from 'react-router-dom';
+import {NavLink, Redirect, useHistory} from 'react-router-dom';
 import {Button, EmailInput, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
 import {loginRequest, logoutRequest, registerRequest, userChangeRequest} from "../../../services/actions";
 import {useDispatch, useSelector} from "react-redux";
 import {deleteCookie, getCookie} from "../../utils";
 function ProfilePage() {
     const inputRef = React.useRef(null);
-    const [form, setFormValue] = useState({ name: '', login: '', password: '' });
+    const [form, setFormValue] = useState({ email: '', password: '', name: '' });
 
     const onChange = (e: { target: { name: any; value: any; }; }) => {
         setFormValue({ ...form, [e.target.name]: e.target.value });
     };
     const dispatch = useDispatch();
+    // @ts-ignore
+    const auth = useSelector(store => (store.burgerCartReducer.reg.login));
     const history = useHistory();
-    const onIconClick = () => {
-        // @ts-ignore
-        setTimeout(() => inputRef.current.focus(), 0)
-        alert('Icon Click Callback')
-    }
-    const signOut = async () => {
-        dispatch(logoutRequest());
-        deleteCookie('refreshToken');
-    };
+
     const returnForm = () => {
-        setFormValue({ name: '', login: '', password: '' })
+        setFormValue({ email: '', password: '', name: '' })
     }
     let logout = useCallback(
         e => {
             e.preventDefault();
-            signOut().then(() => {
+            dispatch(logoutRequest());
+            deleteCookie('refreshToken');
+            if (auth) {
+                return
+            }
+            if(!auth) {
                 history.replace({ pathname: '/login' });
-            });
+            }
+
 
         },
-        [signOut, history]
+        [ form, logoutRequest]
     );
+
+
     let saveUser = useCallback(
         e => {
             e.preventDefault();
             dispatch(userChangeRequest(form)) ;
 
         },
-        [ form, registerRequest]
+        [ form, userChangeRequest]
     );
-
+    if(!auth) {
+        history.replace({ pathname: '/login' });
+    }
+    if (!auth) {
+        return (
+            <Redirect
+                to={{
+                    pathname: '/login'
+                }}
+            />
+        );
+    }
     return (
         <div className={styles.container}>
             <div className={`${styles.left} mr-15`}>
@@ -58,8 +71,10 @@ function ProfilePage() {
                     className={`${styles.navLink} text text_type_main-medium`}
                     activeClassName={styles.activeLink}
                 >История заказов</NavLink>
-                <Button onClick={logout} type={'secondary'} size={'large'}
-                >Выход</Button>
+                <a onClick={logout}  className={`${styles.navLink} text text_type_main-medium mb-20`}
+                >Выход</a>
+                <p className="text text_type_main-default text_color_inactive">В этом разделе вы можете
+                    изменить свои персональные данные</p>
             </div>
             <div className={styles.right}>
                 <div className={'mb-6'}>
@@ -80,8 +95,8 @@ function ProfilePage() {
                         type={'text'}
                         placeholder={'Логин'}
                         onChange={onChange}
-                        value={form.login}
-                        name={'login'}
+                        value={form.email}
+                        name={'email'}
                         error={false}
                         ref={inputRef}
                         errorText={'Ошибка'}
@@ -91,10 +106,10 @@ function ProfilePage() {
                 <div className={'mb-6'}>
                     <PasswordInput onChange={onChange} value={form.password} name={'password'} />
                 </div>
+                <Button onClick={returnForm} type={'secondary'} size={'large'}
+                >Отмена</Button>
                 <Button onClick={saveUser} type={'primary'} size={'large'}
                 >Сохранить</Button>
-                <Button onClick={returnForm} type={'primary'} size={'large'}
-                >Отмена</Button>
             </div>
         </div>
 
