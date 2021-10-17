@@ -2,7 +2,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import styles from './login.module.css';
 import {Button, EmailInput, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
-import {Link, Redirect, useHistory} from 'react-router-dom';
+import {Link, Redirect, useHistory, useLocation} from 'react-router-dom';
 import {loginRequest, registerRequest} from "../../../services/actions";
 import {useDispatch, useSelector} from "react-redux";
 export function LoginPage() {
@@ -12,6 +12,7 @@ export function LoginPage() {
     const [form, setFormValue] = useState({ name: '', email: '', password: '' });
     const dispatch = useDispatch();
     const history = useHistory();
+    let location = useLocation();
     // @ts-ignore
     const auth = useSelector(store => (store.burgerCartReducer.reg.login));
     // @ts-ignore
@@ -38,11 +39,11 @@ export function LoginPage() {
     );
 
     if (auth) {
+        // @ts-ignore
         return (
             <Redirect
-                to={{
-                    pathname: '/'
-                }}
+                // @ts-ignore
+                to={location.state?.from || '/'}
             />
         );
     }
