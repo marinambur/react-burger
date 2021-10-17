@@ -8,7 +8,7 @@ import {useSelector} from "react-redux";
 // @ts-ignore
 function BurgerItem({img, name, price, _id}) {
     // @ts-ignore
-    const constructorState = useSelector(store => (store.burgerCartReducer.allCartItems));
+    const constructorState = useSelector(store => (store.burgerOrderReducer.allCartItems));
     // @ts-ignore
     const getCounts =(mainArray)=> {
         const counts = {};

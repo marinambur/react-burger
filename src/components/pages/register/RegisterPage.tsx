@@ -4,8 +4,9 @@ import { Redirect, useHistory } from 'react-router-dom';
 import styles from './register.module.css';
 import {Button, EmailInput, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link} from "react-router-dom";
-import {loginRequest, postData, registerRequest} from "../../../services/actions";
+
 import {useDispatch, useSelector} from "react-redux";
+import {registerRequest} from "../../../services/actions/auth";
 
 
 
@@ -16,7 +17,7 @@ export function RegisterPage() {
     const dispatch = useDispatch();
     const history = useHistory();
     // @ts-ignore
-    const auth = useSelector(store => (store.burgerCartReducer.reg.login));
+    const auth = useSelector(store => (store.authReducer.reg.login));
 
     const onChange = (e: { target: { name: any; value: any; }; }) => {
         setFormValue({ ...form, [e.target.name]: e.target.value });
@@ -28,7 +29,7 @@ export function RegisterPage() {
 
     }
 
-    let register = useCallback(
+    const register = useCallback(
         e => {
             e.preventDefault();
             dispatch(registerRequest(form)) ;
@@ -49,7 +50,7 @@ export function RegisterPage() {
     }
     return (
         <div className={styles.wrapper}>
-            <form className={styles.form}>
+            <form onSubmit={register} className={styles.form}>
                 <h1  className={`${styles.heading} mb-6`}>Регистрация</h1>
                 <div className={'mb-6'}>
                     <Input
@@ -71,7 +72,7 @@ export function RegisterPage() {
                     <PasswordInput onChange={onChange} value={form.password} name={'password'} />
                 </div>
                 <div className={'mb-20'}>
-                    <Button type="primary" size="large" onClick={register}>
+                    <Button type="primary" size="large">
                         Зарегистрироваться
                     </Button>
                 </div>

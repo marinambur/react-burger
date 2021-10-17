@@ -2,7 +2,7 @@ import React, {useCallback, useState} from 'react';
 import styles from './profile.module.css';
 import {NavLink, Redirect, useHistory} from 'react-router-dom';
 import {Button, EmailInput, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
-import {loginRequest, logoutRequest, registerRequest, userChangeRequest} from "../../../services/actions";
+import {loginRequest, logoutRequest, registerRequest, userChangeRequest} from "../../../services/actions/auth";
 import {useDispatch, useSelector} from "react-redux";
 import {deleteCookie, getCookie} from "../../utils";
 function ProfilePage() {
@@ -14,13 +14,13 @@ function ProfilePage() {
     };
     const dispatch = useDispatch();
     // @ts-ignore
-    const auth = useSelector(store => (store.burgerCartReducer.reg.login));
+    const auth = useSelector(store => (store.authReducer.reg.login));
     const history = useHistory();
 
     const returnForm = () => {
         setFormValue({ email: '', password: '', name: '' })
     }
-    let logout = useCallback(
+    const logout = useCallback(
         e => {
             e.preventDefault();
             dispatch(logoutRequest());
@@ -38,7 +38,7 @@ function ProfilePage() {
     );
 
 
-    let saveUser = useCallback(
+    const saveUser = useCallback(
         e => {
             e.preventDefault();
             dispatch(userChangeRequest(form)) ;
@@ -77,6 +77,7 @@ function ProfilePage() {
                     изменить свои персональные данные</p>
             </div>
             <div className={styles.right}>
+                <form onSubmit={saveUser}>
                 <div className={'mb-6'}>
                     <Input
                         type={'text'}
@@ -108,8 +109,9 @@ function ProfilePage() {
                 </div>
                 <Button onClick={returnForm} type={'secondary'} size={'large'}
                 >Отмена</Button>
-                <Button onClick={saveUser} type={'primary'} size={'large'}
+                <Button type={'primary'} size={'large'}
                 >Сохранить</Button>
+                </form>
             </div>
         </div>
 

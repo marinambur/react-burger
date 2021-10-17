@@ -1,7 +1,7 @@
 import React from 'react';
 import BurgerItem from "../BurgerItem/BurgerItem";
 import {useDrag} from "react-dnd";
-import {ADD_BUN, ADD_MAIN} from "../../services/actions";
+import {ADD_BUN, ADD_MAIN} from "../../services/actions/burgerOrder";
 import {useDispatch} from "react-redux";
 import {v4 as uuidv4} from "uuid";
 import PropTypes from "prop-types";

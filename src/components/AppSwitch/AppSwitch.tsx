@@ -1,36 +1,36 @@
 import React, {useEffect, useState} from 'react';
 import AppHeader from "../AppHeader/AppHeader";
 import AppMain from "../AppMain/AppMain";
-import {BrowserRouter as Router, Redirect, Route, Switch, useHistory, useLocation} from 'react-router-dom';
+import { Route, Switch, useHistory, useLocation} from 'react-router-dom';
 import { LoginPage } from '../pages/login/LoginPage';
 import {RegisterPage} from "../pages/register/RegisterPage";
 import {ResetPasswordPage} from "../pages/reset-password/ResetPasswordPage";
 import {ForgotPasswordPage} from "../pages/forgot-password/ForgotPasswordPage";
 import ProfilePage from "../pages/profile/ProfilePage";
 import Modal from "../Modal/Modal";
-import { getFeed, ITEM_MODAL_CLOSE, userRequest} from "../../services/actions";
+import {userRequest} from "../../services/actions/auth";
 import {useDispatch, useSelector} from "react-redux";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import IngredientPage from "../pages/ingredient/IngredientPage";
 import {ProtectedRoute} from "../ProtectedRoute/ProtectedRoute";
 export const url = 'https://norma.nomoreparties.space/api/ingredients';
 function AppSwitch() {
-    let location = useLocation();
-    let history = useHistory();
+    const location = useLocation();
+    const history = useHistory();
     const action = history.action ==='PUSH' || history.action ==='REPLACE';
     // @ts-ignore
     let background = action && location.state && location.state.background;
 
     // @ts-ignore
-    const checking = useSelector(store => (store.burgerCartReducer.reg.isChecked));
+    const checking = useSelector(store => (store.authReducer.reg.isChecked));
     const dispatch = useDispatch();
     // @ts-ignore
-    const auth = useSelector(store => (store.burgerCartReducer.reg.login));
+    const auth = useSelector(store => (store.authReducer.reg.login));
 
     useEffect(()=> {
         dispatch(userRequest());
     }, []);
-    let back = (e: any) => {
+    const back = (e: any) => {
         history.goBack();
     };
 

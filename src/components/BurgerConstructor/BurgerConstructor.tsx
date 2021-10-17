@@ -9,22 +9,25 @@ import Modal from "../Modal/Modal";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import {useDispatch, useSelector} from "react-redux";
 import { useDrop } from 'react-dnd';
+
 import {
-    DELETE_ITEM,
-    DRAG_SORT,
     ORDER_MODAL_CLOSE,
+    DRAG_SORT,
     postData,
-} from '../../services/actions';
+    DELETE_ITEM,
+} from '../../services/actions/burgerOrder';
 import ConstructorDragItem from '../ConstructorDragItem/ConstructorDragItem';
-export const postUrl = 'https://norma.nomoreparties.space/api/orders';
+import {useHistory} from "react-router-dom";
 
 function BurgerConstructor() {
     // @ts-ignore
-    const constructorState = useSelector(store => (store.burgerCartReducer.allCartItems));
+    const constructorState = useSelector(store => (store.burgerOrderReducer.allCartItems));
     // @ts-ignore
-    const orderState = useSelector(store => (store.burgerCartReducer.order));
+    const orderState = useSelector(store => (store.burgerOrderReducer.order));
     // @ts-ignore
-    const orderModalState = useSelector(store => (store.burgerCartReducer.orderModal));
+    const orderModalState = useSelector(store => (store.burgerOrderReducer.orderModal));
+    const ordertestState = useSelector(store => (store));
+    const history = useHistory();
     const ItemTypes = {
         BOX: 'box',
     }
@@ -48,10 +51,10 @@ function BurgerConstructor() {
     }
     const dispatch = useDispatch();
     // @ts-ignore
-    const auth = useSelector(store => (store.burgerCartReducer.reg.login));
+    const auth = useSelector(store => (store.authReducer.reg.login));
     const makeOrder = () => {
         if (!auth) {
-            alert('Оформить заказ может только авторизованный пользователь!');
+            history.replace({ pathname: '/login' });
             return
         }
         if (constructorState.bun.length) {
