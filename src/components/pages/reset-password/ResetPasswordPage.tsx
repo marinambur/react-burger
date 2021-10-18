@@ -26,7 +26,7 @@ export function ResetPasswordPage() {
         },
         [ form, resetPasswordRequest]
     );
-    if (isEmail==='false') {
+    if (!isEmail || isEmail==='false') {
         return (
             <Redirect
                 to={{

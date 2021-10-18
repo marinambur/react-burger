@@ -322,6 +322,7 @@ export function resetPasswordRequest(form) {
                         dispatch({
                             type: SET_RESET_REQUEST,
                         })
+                        localStorage.setItem('email', 'false');
                     }
                     if (!data.success) {
                         alert(data.message)
