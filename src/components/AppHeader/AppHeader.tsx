@@ -26,7 +26,7 @@ function AppHeader() {
                         </p>
                     </a>
                 </nav>
-                <a href="#">
+                <a href="/">
                     <Logo />
                 </a>
                 <Link to="/profile" className={styles.menuButton}>
