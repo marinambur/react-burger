@@ -1,14 +1,16 @@
-import React from 'react';
+import React, {FC} from 'react';
 import styles from "../BurgerItem/BurgerItem.module.css";
 import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from "prop-types";
 import {useSelector} from "react-redux";
-
-
-// @ts-ignore
-function BurgerItem({img, name, price, _id}) {
-    // @ts-ignore
-    const constructorState = useSelector(store => (store.burgerOrderReducer.allCartItems));
+interface BurgerItemPropsInterface {
+    _id: string,
+    price: number,
+    name: string,
+    img: string,
+    type?: 'bun'|'main'|'sauce'
+}
+const BurgerItem: FC<BurgerItemPropsInterface> = ({img, name, price, _id}) => {
+    const constructorState = useSelector((store: any) => (store.burgerOrderReducer.allCartItems));
     // @ts-ignore
     const getCounts =(mainArray)=> {
         const counts = {};
@@ -21,8 +23,6 @@ function BurgerItem({img, name, price, _id}) {
     const counts = getCounts(constructorState.main)
     // @ts-ignore
     let currentCount = counts[_id];
-
-    // @ts-ignore
     return (
         <div className={styles.item}>
             <img className={`${styles.img} mb-1`} src={img} alt={name}></img>
@@ -40,10 +40,5 @@ function BurgerItem({img, name, price, _id}) {
         </div>
     );
 }
-BurgerItem.propTypes= {
-    img: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    _id: PropTypes.string.isRequired,
-}
+
 export default BurgerItem;

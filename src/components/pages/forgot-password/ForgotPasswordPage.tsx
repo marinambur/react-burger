@@ -1,21 +1,19 @@
 
 import React, {useCallback, useState} from 'react';
 import styles from './forgot-password.module.css';
-import {Button, EmailInput, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
+import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, Redirect, useHistory} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {forgotPasswordRequest, userChangeRequest} from "../../../services/actions/auth";
+import {forgotPasswordRequest} from "../../../services/actions/auth";
 
 export function ForgotPasswordPage() {
     const [form, setFormValue] = useState({ email: '' });
     const inputRef = React.useRef(null);
     const dispatch = useDispatch();
-    // @ts-ignore
-    const auth = useSelector(store => (store.authReducer.reg.login));
-    // @ts-ignore
-    const email = useSelector(store => (store.authReducer.reg.forgotSuccess));
+    const auth = useSelector((store: any) => (store.authReducer.reg.login));
+    const email = useSelector((store: any) => (store.authReducer.reg.forgotSuccess));
     const history = useHistory();
-    const onChange = (e: { target: { name: any; value: any; }; }) => {
+    const onChange = (e: { target: { name: string; value: string; }; }) => {
         setFormValue({ ...form, [e.target.name]: e.target.value });
     };
     const sendEmail = useCallback(

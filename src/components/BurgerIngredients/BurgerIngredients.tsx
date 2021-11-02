@@ -4,19 +4,14 @@ import {Link, useLocation} from 'react-router-dom';
 import customScroll from '../BurgerConstructor/BurgerConstructor.module.css';
 import {useDispatch, useSelector} from 'react-redux';
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
-import Modal from "../Modal/Modal";
-import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import {
     getFeed,
-    ITEM_MODAL_CLOSE,
-    SHOW_INFO
 } from '../../services/actions';
 import BurgerDragItem from "../BurgerDragItem/BurgerDragItem";
+import {IBurgerItem} from "../../types/types";
 function BurgerIngredients() {
     const [current, setCurrent] = React.useState('bun');
-    // @ts-ignore
-    const { items } = useSelector(store => (store.burgerCartReducer.allItems));
-    // @ts-ignore
+    const { items } = useSelector((store: any) => (store.burgerCartReducer.allItems));
     const location = useLocation();
     const dispatch = useDispatch();
     useEffect(()=> {
@@ -44,23 +39,9 @@ function BurgerIngredients() {
         }
     }, [handleScroll]);
 
-    // @ts-ignore
-    const isIngredientDetailsModalOpen = useSelector(store => (store.burgerCartReducer.itemModal));
-    const showInfo = () => {
-        dispatch({
-            type: SHOW_INFO,
-        })};
-    const closeModal = (item: any) => {
-        dispatch({
-            type: ITEM_MODAL_CLOSE,
-        })
-    };
 
     return (
         <section>
-        {/*    {isIngredientDetailsModalOpen && <Modal onClose={closeModal} >*/}
-        {/*<IngredientDetails info={itemStore}></IngredientDetails>*/}
-        {/*    </Modal>}*/}
             <div className={`${styles.section} mb-5`}>
                 <Tab value="one" active={current === 'bun'} onClick={setCurrent}>
                     Булки
@@ -72,14 +53,11 @@ function BurgerIngredients() {
                     Начинки
                 </Tab>
             </div>
-            <h2 className="text text_type_main-medium mb-2"></h2>
             <div className={styles.constructorContainer}>
                 <div id='box' className={`${customScroll.customScroll} ${styles.box}`}>
                     <h2 id='buns' className="text text_type_main-medium mb-2" >Булки</h2>
                     <div className={styles.itemBox}>
-                        {items && items.filter((item: { type: string; }) => item.type === 'bun').map((item: {
-                            _id: any;
-                            image: any; name: any; price: any; }, index: any) =>
+                        {items && items.filter((item: IBurgerItem) => item.type === 'bun').map((item: IBurgerItem) =>
                             <Link  className={styles.link} key={item._id} to={{
                                 pathname: `/ingredients/${item._id}`,
                                 state: { background: location }
@@ -91,9 +69,7 @@ function BurgerIngredients() {
                     </div>
                     <h2 id='sauce' className="text text_type_main-medium mb-2">Соусы</h2>
                     <div className={styles.itemBox}>
-                        {items && items.filter((item: { type: string; }) => item.type === 'sauce').map((item: {
-                            _id: any;
-                            image: any; name: any; price: any; }, index: any) =>
+                        {items && items.filter((item: IBurgerItem) => item.type === 'sauce').map((item: IBurgerItem) =>
                             <Link  className={styles.link} key={item._id} to={{
                                 pathname: `/ingredients/${item._id}`,
                                 state: { background: location }
@@ -104,9 +80,7 @@ function BurgerIngredients() {
                     </div>
                     <h2 id='main' className="text text_type_main-medium mb-2">Начинки</h2>
                     <div className={styles.itemBox}>
-                        {items && items.filter((item: { type: string; }) => item.type === 'main').map((item: {
-                            _id: any;
-                            image: any; name: any; price: any; }, index: any) =>
+                        {items && items.filter((item: IBurgerItem) => item.type === 'main').map((item: IBurgerItem) =>
                             <Link className={styles.link} key={item._id} to={{
                                 pathname: `/ingredients/${item._id}`,
                                 state: { background: location }

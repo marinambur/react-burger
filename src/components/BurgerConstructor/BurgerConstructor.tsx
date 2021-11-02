@@ -15,18 +15,15 @@ import {
     DRAG_SORT,
     postData,
     DELETE_ITEM,
-} from '../../services/actions/burgerOrder';
+} from "../../services/actions/burgerOrder";
 import ConstructorDragItem from '../ConstructorDragItem/ConstructorDragItem';
 import {useHistory} from "react-router-dom";
 
 function BurgerConstructor() {
-    // @ts-ignore
-    const constructorState = useSelector(store => (store.burgerOrderReducer.allCartItems));
-    // @ts-ignore
-    const orderState = useSelector(store => (store.burgerOrderReducer.order));
-    // @ts-ignore
-    const orderModalState = useSelector(store => (store.burgerOrderReducer.orderModal));
-    const ordertestState = useSelector(store => (store));
+
+    const constructorState = useSelector((store: any) => (store.burgerOrderReducer.allCartItems));
+    const orderState = useSelector((store: any) => (store.burgerOrderReducer.order));
+    const orderModalState = useSelector((store: any) => (store.burgerOrderReducer.orderModal));
     const history = useHistory();
     const ItemTypes = {
         BOX: 'box',
@@ -42,16 +39,14 @@ function BurgerConstructor() {
     const totalPrice = useMemo(()=> {
         const array = constructorState.main;
         const arrayBun = constructorState.bun;
-        // @ts-ignore
-        return array.map((item: { type: string; price: number; }) => item.type==='bun' ? item.price*2 : item.price).reduce((a, b) => a + b, 0) + arrayBun.map((item: { type: string; price: number; }) => item.type==='bun' ? item.price*2 : item.price).reduce((a, b) => a + b, 0)
+        return array.map((item: { type: string; price: number; }) => item.type==='bun' ? item.price*2 : item.price).reduce((a: any, b: any) => a + b, 0) + arrayBun.map((item: { type: string; price: number; }) => item.type==='bun' ? item.price*2 : item.price).reduce((a: any, b: any) => a + b, 0)
     }, [constructorState.main, constructorState.bun])
 
     function getIngredientIds(array: any[]) {
         return {ingredients: array.map((item) => item._id)};
     }
     const dispatch = useDispatch();
-    // @ts-ignore
-    const auth = useSelector(store => (store.authReducer.reg.login));
+    const auth = useSelector((store: any) => (store.authReducer.reg.login));
     const makeOrder = () => {
         if (!auth) {
             history.replace({ pathname: '/login' });
@@ -59,7 +54,6 @@ function BurgerConstructor() {
         }
         if (constructorState.bun.length) {
             const ingredientsIds = getIngredientIds(constructorState.bun).ingredients.concat(getIngredientIds(constructorState.main).ingredients);
-            // @ts-ignore
             dispatch( postData({ingredients: ingredientsIds}));
         } else {
             alert("Обязательно выберите булку!")
@@ -82,7 +76,7 @@ function BurgerConstructor() {
         dispatch({
             type: ORDER_MODAL_CLOSE,
         })};
-    const deleteItem = (id: any) => {
+    const deleteItem = (id: string) => {
         const filteredArr = constructorState.main.filter((item: { uniqueId: any; }) => item.uniqueId !== id);
         dispatch({
             type: DELETE_ITEM,
@@ -95,7 +89,7 @@ function BurgerConstructor() {
                 </Modal>}
                 <div className={`mb-20`} style={{ display: 'flex', flexDirection: 'column' }}>
                     {constructorState && constructorState.bun.map((item: any, index: any) =>
-                        <ConstructorDragItem key={index} index={index} id={item.uniqueId} moveCard={moveCard} type={'top'} item={item} isLocked={true}>
+                        <ConstructorDragItem delete={deleteItem} key={index} index={index} id={item.uniqueId} moveCard={moveCard} type={'top'} item={item} isLocked={true}>
                         </ConstructorDragItem>
                     )}
                     <div className={`${styles.customScroll} mb-4 mt-4`} style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginLeft: '-50px' }}>
@@ -108,7 +102,7 @@ function BurgerConstructor() {
                         )}
                     </div>
                     {constructorState && constructorState.bun.map((item: any, index: any) =>
-                        <ConstructorDragItem key={index} index={index} id={item.uniqueId} moveCard={moveCard} type={'bottom'} item={item} isLocked={true}>
+                        <ConstructorDragItem delete={deleteItem} key={index} index={index} id={item.uniqueId} moveCard={moveCard} type={'bottom'} item={item} isLocked={true}>
                         </ConstructorDragItem>
 
                     )}

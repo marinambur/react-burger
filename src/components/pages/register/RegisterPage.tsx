@@ -16,18 +16,11 @@ export function RegisterPage() {
     const [form, setFormValue] = useState({ name: '', email: '', password: '' });
     const dispatch = useDispatch();
     const history = useHistory();
-    // @ts-ignore
-    const auth = useSelector(store => (store.authReducer.reg.login));
+    const auth = useSelector((store: any) => (store.authReducer.reg.login));
 
-    const onChange = (e: { target: { name: any; value: any; }; }) => {
+    const onChange = (e: { target: { name: string; value: string; }; }) => {
         setFormValue({ ...form, [e.target.name]: e.target.value });
     };
-    const onIconClick = () => {
-        // @ts-ignore
-        setTimeout(() => inputRef.current.focus(), 0)
-        alert('Icon Click Callback')
-
-    }
 
     const register = useCallback(
         e => {

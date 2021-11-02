@@ -1,21 +1,18 @@
 
 import React, {useCallback, useState} from 'react';
 import styles from './reset-password.module.css';
-import {Button, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
-import {Link, Redirect, useHistory} from "react-router-dom";
+import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
+import {Link, Redirect} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {forgotPasswordRequest, resetPasswordRequest} from "../../../services/actions/auth";
+import { resetPasswordRequest} from "../../../services/actions/auth";
 
 export function ResetPasswordPage() {
     const [form, setFormValue] = useState({ password: '', token: ''});
     const inputRef = React.useRef(null);
-    const history = useHistory();
     const dispatch = useDispatch();
-    // @ts-ignore
-    const reset = useSelector(store => (store.authReducer.reg.reset));
-    // @ts-ignore
-    const auth = useSelector(store => (store.authReducer.reg.login));
-    const onChange = (e: { target: { name: any; value: any; }; }) => {
+    const reset = useSelector((store: any) => (store.authReducer.reg.reset));
+    const auth = useSelector((store: any) => (store.authReducer.reg.login));
+    const onChange = (e: { target: { name: string; value: string; }; }) => {
         setFormValue({ ...form, [e.target.name]: e.target.value });
     };
     const isEmail = localStorage.getItem('email');

@@ -1,6 +1,5 @@
 import React, {useEffect} from 'react';
 import styles from "./IngredientDetails.module.css";
-import PropTypes from "prop-types";
 import {useDispatch, useSelector} from "react-redux";
 import {useParams} from "react-router-dom";
 import {getFeed} from "../../services/actions";
@@ -10,11 +9,10 @@ function IngredientDetails() {
     useEffect(()=> {
         dispatch(getFeed())
     }, []);
-    // @ts-ignore
-    const items = useSelector(store => (store.burgerCartReducer.allItems.items));
+    const items = useSelector((store: any) => (store.burgerCartReducer.allItems.items));
     // @ts-ignore
     let ID = useParams().id;
-    const info = items.filter((item: { _id: any; }) => item._id === ID)[0];
+    const info = items.filter((item: { _id: string; }) => item._id === ID)[0];
     return (
         <>
             {info &&       <div className={styles.box}>
@@ -47,15 +45,4 @@ function IngredientDetails() {
 
     );
 }
-// const infoPropTypes = PropTypes.shape({
-//     fat: PropTypes.number,
-//     carbohydrates: PropTypes.number.isRequired,
-//     proteins: PropTypes.number.isRequired,
-//     calories: PropTypes.number.isRequired,
-//     name: PropTypes.string.isRequired,
-//     image_large: PropTypes.string.isRequired,
-// });
-// IngredientDetails.propTypes={
-//     info: infoPropTypes
-// }
 export default IngredientDetails;

@@ -1,12 +1,21 @@
-import React from 'react';
+import React, {FC} from 'react';
 import {ConstructorElement} from "@ya.praktikum/react-developer-burger-ui-components";
 import { useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-import PropTypes from "prop-types";
+import {IBurgerItem} from "../../types/types";
 export const ItemTypes = {
     CARD: 'card',
 }
-const ConstructorDragItem = (props: any) => {
+interface ConstructorDragItemPropsInterface {
+    item: IBurgerItem,
+    moveCard: (drugIndex: number, hoverIndex: number)=>void,
+    isLocked: boolean,
+    index: number,
+    id: string,
+    type?: 'top'|'bottom',
+    delete: (id: string)=> void,
+}
+const ConstructorDragItem: FC<ConstructorDragItemPropsInterface> = (props) => {
     const ref = useRef(null);
     const id = props.id;
     const index = props.index;
@@ -21,6 +30,7 @@ const ConstructorDragItem = (props: any) => {
             if (!ref.current) {
                 return;
             }
+
             // @ts-ignore
             const dragIndex = item.index;
             const hoverIndex = props.index;
@@ -55,9 +65,7 @@ const ConstructorDragItem = (props: any) => {
         }),
     });
     drag(drop(ref));
-    // @ts-ignore
     return (
-        // @ts-ignore
         <div key={props.item.index} ref={ref}>
             <ConstructorElement
                 handleClose={()=> {
@@ -73,24 +81,5 @@ const ConstructorDragItem = (props: any) => {
     );
 };
 
-const itemsPropTypes = PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    uniqueId: PropTypes.string,
-    price: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired,
-});
-
-ConstructorDragItem.propTypes = {
-    item: itemsPropTypes.isRequired,
-    moveCard: PropTypes.func.isRequired,
-    isLocked: PropTypes.bool,
-    index: PropTypes.number.isRequired,
-    id: PropTypes.string,
-    type: PropTypes.string,
-    delete: PropTypes.func,
-    children: PropTypes.array,
-
-};
 
 export default ConstructorDragItem;

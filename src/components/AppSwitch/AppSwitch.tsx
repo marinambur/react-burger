@@ -30,7 +30,7 @@ function AppSwitch() {
     useEffect(()=> {
         dispatch(userRequest());
     }, []);
-    const back = (e: any) => {
+    const back = () => {
         history.goBack();
     };
 

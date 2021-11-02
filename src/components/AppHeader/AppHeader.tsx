@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from'./AppHeader.module.css';
-import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
+import { useRouteMatch } from 'react-router-dom';
 import {BurgerIcon, ListIcon, Logo, ProfileIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link} from "react-router-dom";
 import classNames from "classnames";
