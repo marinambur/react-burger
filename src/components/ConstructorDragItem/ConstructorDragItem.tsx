@@ -48,7 +48,6 @@ const ConstructorDragItem = (props: any) => {
     const [{ isDragging }, drag] = useDrag({
         type: ItemTypes.CARD,
         item: () => {
-            console.log( id, index, 'validId')
             return { id, index };
         },
         collect: (monitor) => ({

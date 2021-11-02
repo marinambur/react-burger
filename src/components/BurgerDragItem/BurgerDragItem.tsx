@@ -1,13 +1,13 @@
 import React from 'react';
 import BurgerItem from "../BurgerItem/BurgerItem";
 import {useDrag} from "react-dnd";
-import {ADD_BUN, ADD_MAIN} from "../../services/actions";
+import {ADD_BUN, ADD_MAIN} from "../../services/actions/burgerOrder";
 import {useDispatch} from "react-redux";
 import {v4 as uuidv4} from "uuid";
 import PropTypes from "prop-types";
 
 // @ts-ignore
-const BurgerDragItem = ({item, show}) => {
+const BurgerDragItem = ({item}) => {
     const ItemTypes = {
         BOX: 'box',
     }
@@ -39,7 +39,7 @@ const dispatch = useDispatch();
     const opacity = isDragging ? 0.4 : 1;
     // @ts-ignore
     return (
-        <div key={item._id} ref={drag} role="Box" style={{opacity}} onClick={() => { show(item)}}>
+        <div key={item._id} ref={drag} role="Box" style={{opacity}} >
             <BurgerItem img={item.image} name={item.name} price={item.price} _id={item._id}/>
         </div>
     );
@@ -53,7 +53,6 @@ const itemsPropTypes = PropTypes.shape({
 
 BurgerDragItem.propTypes = {
     item: itemsPropTypes.isRequired,
-    show: PropTypes.func.isRequired,
 
 };
 
