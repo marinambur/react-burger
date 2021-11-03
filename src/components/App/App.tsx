@@ -1,13 +1,13 @@
 import React from 'react';
-import {BrowserRouter as Router, Route, Switch, useLocation} from 'react-router-dom';
+import {BrowserRouter as Router} from 'react-router-dom';
 import AppSwitch from "../AppSwitch/AppSwitch";
 export const burgerUrl = 'https://norma.nomoreparties.space/api';
 function App() {
     return (
-          <Router>
+        <Router>
             <AppSwitch/>
-          </Router>
-  );
+        </Router>
+    );
 }
 
 export default App;

@@ -13,24 +13,26 @@ import {useDispatch, useSelector} from "react-redux";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import IngredientPage from "../pages/ingredient/IngredientPage";
 import {ProtectedRoute} from "../ProtectedRoute/ProtectedRoute";
+import {Location} from "history";
+
 export const url = 'https://norma.nomoreparties.space/api/ingredients';
 function AppSwitch() {
-    const location = useLocation();
     const history = useHistory();
     const action = history.action ==='PUSH' || history.action ==='REPLACE';
-    // @ts-ignore
+
+    type TLocationState={
+    background: Location
+    }
+    const location = useLocation<TLocationState>();
     let background = action && location.state && location.state.background;
 
-    // @ts-ignore
-    const checking = useSelector(store => (store.authReducer.reg.isChecked));
+    const checking = useSelector((store: any) => (store.authReducer.reg.isChecked));
     const dispatch = useDispatch();
-    // @ts-ignore
-    const auth = useSelector(store => (store.authReducer.reg.login));
 
     useEffect(()=> {
         dispatch(userRequest());
     }, []);
-    const back = (e: any) => {
+    const back = () => {
         history.goBack();
     };
 

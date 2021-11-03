@@ -1,20 +1,19 @@
 import React, {useCallback, useState} from 'react';
 import styles from './profile.module.css';
 import {NavLink, Redirect, useHistory} from 'react-router-dom';
-import {Button, EmailInput, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
-import {loginRequest, logoutRequest, registerRequest, userChangeRequest} from "../../../services/actions/auth";
+import {Button, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
+import { logoutRequest, userChangeRequest} from "../../../services/actions/auth";
 import {useDispatch, useSelector} from "react-redux";
-import {deleteCookie, getCookie} from "../../utils";
+import {deleteCookie} from "../../utils";
 function ProfilePage() {
     const inputRef = React.useRef(null);
     const [form, setFormValue] = useState({ email: '', password: '', name: '' });
 
-    const onChange = (e: { target: { name: any; value: any; }; }) => {
+    const onChange = (e: { target: { name: string; value: string; }; }) => {
         setFormValue({ ...form, [e.target.name]: e.target.value });
     };
     const dispatch = useDispatch();
-    // @ts-ignore
-    const auth = useSelector(store => (store.authReducer.reg.login));
+    const auth = useSelector((store: any) => (store.authReducer.reg.login));
     const history = useHistory();
 
     const returnForm = () => {

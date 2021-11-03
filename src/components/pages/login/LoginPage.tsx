@@ -1,23 +1,20 @@
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import styles from './login.module.css';
-import {Button, EmailInput, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
+import {Button, EmailInput, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, Redirect, useHistory, useLocation} from 'react-router-dom';
-import {loginRequest, registerRequest} from "../../../services/actions/auth";
+import {loginRequest} from "../../../services/actions/auth";
 import {useDispatch, useSelector} from "react-redux";
 export function LoginPage() {
     const [form, setFormValue] = useState({ name: '', email: '', password: '' });
     const dispatch = useDispatch();
     const history = useHistory();
     let location = useLocation();
-    // @ts-ignore
-    const auth = useSelector(store => (store.authReducer.reg.login));
-    // @ts-ignore
-    const checking = useSelector(store => (store.authReducer.reg.isChecked));
-    const onChange = (e: { target: { name: any; value: any; }; }) => {
+
+    const auth = useSelector((store: any) => (store.authReducer.reg.login));
+    const onChange = (e: { target: { name: string; value: string; }; }) => {
         setFormValue({ ...form, [e.target.name]: e.target.value });
     };
-    const inputRef = React.useRef(null)
 
     const login = useCallback(
         e => {
@@ -36,7 +33,6 @@ export function LoginPage() {
     );
 
     if (auth) {
-        // @ts-ignore
         return (
             <Redirect
                 // @ts-ignore

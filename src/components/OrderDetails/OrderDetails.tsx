@@ -1,12 +1,19 @@
-import React from 'react';
+import React, {FC} from 'react';
 import styles from "./OrderDetails.module.css";
 import {CheckMarkIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from "prop-types";
+interface IOrder {
+    number: number
+}
+interface IInfo {
+    order: IOrder,
+    name: string,
+    success: boolean
+}
+interface OrderDetailsPropsInterface {
+    info: IInfo
+}
 
-
-// @ts-ignore
-function OrderDetails(props) {
-    let id = 4;
+const OrderDetails: FC<OrderDetailsPropsInterface> = (props) => {
     return (
         <div className={styles.box}>
             <p className={`${styles.glow} text text_type_digits-large mb-8`}>{props.info.order.number}</p>
@@ -23,17 +30,5 @@ function OrderDetails(props) {
         </div>
     );
 }
-const orderPropTypes = PropTypes.shape({
-    number: PropTypes.number.isRequired,
-});
-const info = PropTypes.shape({
-    order: orderPropTypes.isRequired,
-    name: PropTypes.string.isRequired,
-    success: PropTypes.bool,
-});
-OrderDetails.propTypes = {
-    info: info,
-
-};
 
 export default OrderDetails;

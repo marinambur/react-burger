@@ -3,8 +3,7 @@ import {useSelector} from "react-redux";
 
 // @ts-ignore
 export function ProtectedRoute({ children, ...rest }) {
-    // @ts-ignore
-    const auth = useSelector(store => (store.authReducer.reg.login));
+    const auth = useSelector((store: any) => (store.authReducer.reg.login));
     return (
         <Route
             {...rest}
