@@ -7,7 +7,7 @@ import classNames from "classnames";
 
 function AppHeader() {
     const isConstructor = !!useRouteMatch({ path: '/', exact: true});
-    // const isFeed = !!useRouteMatch('/feed');
+    const isFeed = !!useRouteMatch('/feed');
     const isProfile = !!useRouteMatch('/profile');
     return (
         <header className={`${styles.header} mb-10`}>
@@ -19,12 +19,12 @@ function AppHeader() {
                             Конструктор
                         </p>
                     </Link>
-                    <a href="#" className={styles.menuButton}>
-                        <ListIcon type="secondary" />
-                        <p className="text text_type_main-default pl-2 text_color_inactive">
+                    <Link to="/feed" className={styles.menuButton}>
+                        <ProfileIcon type={isFeed ? 'primary' : 'secondary'} />
+                        <p className={classNames('text text_type_main-default pl-2', {'text_color_inactive' : !isFeed})}>
                             Лента заказов
                         </p>
-                    </a>
+                    </Link>
                 </nav>
                 <a href="/">
                     <Logo />

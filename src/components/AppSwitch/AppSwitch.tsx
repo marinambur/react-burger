@@ -14,6 +14,9 @@ import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import IngredientPage from "../pages/ingredient/IngredientPage";
 import {ProtectedRoute} from "../ProtectedRoute/ProtectedRoute";
 import {Location} from "history";
+import {FeedPage} from "../pages/feed/FeedPage";
+import {ProfileOrders} from "../pages/profile/ProfileOrders";
+import {OrderIngredientPage} from "../pages/OrderIngredientPage/OrderIngredientPage";
 
 export const url = 'https://norma.nomoreparties.space/api/ingredients';
 function AppSwitch() {
@@ -52,10 +55,17 @@ function AppSwitch() {
                 <Route path="/reset-password">
                     <ResetPasswordPage />
                 </Route>
-                <ProtectedRoute path="/profile">
+                <Route path="/feed" exact={true}>
+                    <FeedPage />
+                </Route>
+                <ProtectedRoute path="/profile" exact={true}>
                     <ProfilePage />
                 </ProtectedRoute>
+                <ProtectedRoute path="/profile/orders" exact={true}>
+                    <ProfileOrders />
+                </ProtectedRoute>
                 <Route path="/ingredients/:id" children={<IngredientPage />} />
+                <Route path="/feed/id" children={<OrderIngredientPage />} />
                 <Route path="/" exact={true}>
                     <AppMain/>
                 </Route>
@@ -63,6 +73,11 @@ function AppSwitch() {
             {background && <Route path="/ingredients/:id">
                 <Modal onClose={back} >
                     <IngredientDetails ></IngredientDetails>
+                </Modal>
+            </Route>}
+            {background && <Route path="/feed/id">
+                <Modal onClose={back} >
+                    <OrderIngredientPage ></OrderIngredientPage>
                 </Modal>
             </Route>}
         </> }
