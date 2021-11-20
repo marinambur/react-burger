@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import AppHeader from "../AppHeader/AppHeader";
 import AppMain from "../AppMain/AppMain";
-import { Route, Switch, useHistory, useLocation} from 'react-router-dom';
+import {Redirect, Route, Switch, useHistory, useLocation} from 'react-router-dom';
 import { LoginPage } from '../pages/login/LoginPage';
 import {RegisterPage} from "../pages/register/RegisterPage";
 import {ResetPasswordPage} from "../pages/reset-password/ResetPasswordPage";
@@ -17,6 +17,8 @@ import {Location} from "history";
 import {FeedPage} from "../pages/feed/FeedPage";
 import {ProfileOrders} from "../pages/profile/ProfileOrders";
 import {OrderIngredientPage} from "../pages/OrderIngredientPage/OrderIngredientPage";
+import {NotFound} from "../pages/NotFound/NotFound";
+import {getFeed} from "../../services/actions";
 
 export const url = 'https://norma.nomoreparties.space/api/ingredients';
 function AppSwitch() {
@@ -30,18 +32,28 @@ function AppSwitch() {
     let background = action && location.state && location.state.background;
 
     const checking = useSelector((store: any) => (store.authReducer.reg.isChecked));
-    const dispatch = useDispatch();
 
+    const dispatch = useDispatch();
     useEffect(()=> {
         dispatch(userRequest());
+    }, []);
+    useEffect(()=> {
+        dispatch(getFeed())
     }, []);
     const back = () => {
         history.goBack();
     };
+    if (!checking) {
+        return (
+      <>
+          <AppHeader />
+          <NotFound/>
+      </>
+        );
+    }
 
     return (
-        <> {checking &&    <>
-            <AppHeader />
+        <>  <AppHeader />{checking &&    <>
             <Switch location={background || location}>
                 <Route path="/login">
                     <LoginPage />
@@ -65,7 +77,8 @@ function AppSwitch() {
                     <ProfileOrders />
                 </ProtectedRoute>
                 <Route path="/ingredients/:id" children={<IngredientPage />} />
-                <Route path="/feed/id" children={<OrderIngredientPage />} />
+                <Route path="/feed/:id" children={<OrderIngredientPage />} />
+                <Route path="/profile/orders/:id" children={<OrderIngredientPage />} />
                 <Route path="/" exact={true}>
                     <AppMain/>
                 </Route>
@@ -75,7 +88,12 @@ function AppSwitch() {
                     <IngredientDetails ></IngredientDetails>
                 </Modal>
             </Route>}
-            {background && <Route path="/feed/id">
+            {background && <Route path="/profile/orders/:id">
+                <Modal onClose={back} >
+                    <OrderIngredientPage ></OrderIngredientPage>
+                </Modal>
+            </Route>}
+            {background && <Route path="/feed/:id">
                 <Modal onClose={back} >
                     <OrderIngredientPage ></OrderIngredientPage>
                 </Modal>

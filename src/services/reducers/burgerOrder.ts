@@ -4,7 +4,7 @@ import {
     SET_ORDER_FAILED,
     ORDER_MODAL_CLOSE,
     DRAG_SORT,
-    ADD_BUN, ADD_MAIN, DELETE_ITEM
+    ADD_BUN, ADD_MAIN, DELETE_ITEM, TBurgerOrdersActions
 
 } from '../actions/burgerOrder';
 const initialState = {
@@ -17,8 +17,7 @@ const initialState = {
 
 };
 
-// @ts-ignore
-export const burgerOrderReducer = (state = initialState, action) => {
+export const burgerOrderReducer = (state = initialState, action: TBurgerOrdersActions) => {
     switch (action.type) {
         case SET_ORDER: {
             return {

@@ -36,7 +36,7 @@ function BurgerConstructor() {
             canDrop: monitor.canDrop(),
         }),
     }));
-    const totalPrice = useMemo(()=> {
+ const totalPrice = useMemo(()=> {
         const array = constructorState.main;
         const arrayBun = constructorState.bun;
         return array.map((item: { type: string; price: number; }) => item.type==='bun' ? item.price*2 : item.price).reduce((a: any, b: any) => a + b, 0) + arrayBun.map((item: { type: string; price: number; }) => item.type==='bun' ? item.price*2 : item.price).reduce((a: any, b: any) => a + b, 0)
@@ -55,6 +55,7 @@ function BurgerConstructor() {
         if (constructorState.bun.length) {
             const ingredientsIds = getIngredientIds(constructorState.bun).ingredients.concat(getIngredientIds(constructorState.main).ingredients);
             dispatch( postData({ingredients: ingredientsIds}));
+            console.log(ingredientsIds, 'ingredientsIds')
         } else {
             alert("Обязательно выберите булку!")
             return;

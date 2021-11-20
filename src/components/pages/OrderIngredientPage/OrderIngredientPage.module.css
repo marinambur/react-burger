@@ -31,6 +31,10 @@
     width: 30%;
     margin: auto;
     min-width: 540px;
+    z-index: 15;
+}
+.container {
+    width: 100%;
 }
 .circle {
     position: relative;

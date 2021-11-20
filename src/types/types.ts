@@ -7,3 +7,4 @@
     uniqueId: string,
     index: string|number,
 }
+export type TIngredientsIds = {ingredients: string[]};

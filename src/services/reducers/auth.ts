@@ -6,7 +6,20 @@ import {
 } from '../actions/auth';
 
 import type { TAuthActions } from '../actions/auth';
-const initialState = {
+type TUser = {
+    name?: string,
+    email?: string,
+    password?: string
+}
+type TInitialState = {
+    reg: {
+        regRequest: boolean, isChecked: boolean,
+        regRequestFailed: boolean,
+        user: TUser[] | {}, authorization: boolean, login: boolean, loginRequest: boolean,
+        loginRequestFailed: boolean, forgotSuccess: boolean, reset: boolean
+    }
+}
+const initialState: TInitialState = {
     reg: {    regRequest: false, isChecked: false,
         regRequestFailed: false,
         user: {}, authorization: false, login: false, loginRequest: false,

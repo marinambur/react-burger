@@ -68,3 +68,31 @@
     left: 20px;
     z-index: 10 !important;
 }
+.box {
+    max-width: 844px;
+    width: 100%;
+}
+.customScroll {
+    scrollbar-color: #2F2F37 #8585AD;
+    scrollbar-width: thin;
+    max-height: 100vh;
+    overflow-y: auto;
+    width: 100%;
+    max-width: 955px;
+}
+
+.customScroll::-webkit-scrollbar {
+    width: 12px;
+}
+.customScroll::-webkit-scrollbar-track {
+    background: #2F2F37;
+}
+.customScroll::-webkit-scrollbar-thumb {
+    background: #8585AD;
+    border: 3px solid #2F2F37;
+    border-radius: 6px;
+}
+.link {
+    text-decoration: none;
+    color: white;
+}

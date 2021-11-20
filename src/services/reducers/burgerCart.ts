@@ -4,7 +4,7 @@ import {
     GET_FEED_FAILED,
     SHOW_INFO,
     ITEM_MODAL_CLOSE,
-    SET_TOTAL_PRICE,
+    SET_TOTAL_PRICE, TActions,
 
 } from '../actions';
 
@@ -17,12 +17,9 @@ const initialState = {
 
 };
 
-
-// @ts-ignore
-export const burgerCartReducer = (state = initialState, action) => {
+export const burgerCartReducer = (state = initialState, action: any) => {
     switch (action.type) {
         case SHOW_INFO: {
-            // @ts-ignore
             return { ...state, itemModal: true };
         }
         case GET_FEED: {

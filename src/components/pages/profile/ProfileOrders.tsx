@@ -1,18 +1,25 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import styles from './profile.module.css';
 import {NavLink, Redirect, useHistory} from 'react-router-dom';
 import { logoutRequest, userChangeRequest} from "../../../services/actions/auth";
 import {useDispatch, useSelector} from "react-redux";
 import {deleteCookie} from "../../utils";
-import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {OrderItem} from "../../OrderItem/OrderItem";
-import {OrderFeed} from "../../OrderFeed/OrderFeed";
+import { UserFeed } from '../../UserFeed/UserFeed';
+import {wsActions, wsMyActions} from "../../../index";
+
+
 export function ProfileOrders() {
 
     const dispatch = useDispatch();
     const auth = useSelector((store: any) => (store.authReducer.reg.login));
     const history = useHistory();
-
+    const myBurgers = useSelector((store: any) => store?.wsMyReducer?.myMessages);
+    useEffect(() => {
+        dispatch({ type: wsMyActions.wsInit });
+        return () => {
+            dispatch({ type: wsMyActions.onClose });
+        };
+    }, []);
     const logout = useCallback(
         e => {
             e.preventDefault();
@@ -43,6 +50,9 @@ export function ProfileOrders() {
             />
         );
     }
+    if (!myBurgers) {
+        return null
+    }
     return (
         <div className={styles.container}>
             <div className={`${styles.left} mr-15`}>
@@ -61,7 +71,7 @@ export function ProfileOrders() {
                 <p className="text text_type_main-default text_color_inactive">В этом разделе вы можете
                     изменить свои персональные данные</p>
             </div>
-            <OrderFeed></OrderFeed>
+            <UserFeed></UserFeed>
         </div>
 
     );

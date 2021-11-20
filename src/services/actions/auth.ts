@@ -1,6 +1,7 @@
 import {burgerUrl} from "../../components/App/App";
 import {deleteCookie, getCookie, setCookie} from "../../components/utils";
-
+import {store} from "../../index";
+export type AppDispatch = typeof store.dispatch;
 
 export const SET_REGISTER_REQUEST_SUCCESS: 'SET_REGISTER_REQUEST_SUCCESS'='SET_REGISTER_REQUEST_SUCCESS';
 export const SET_REGISTER_REQUEST_FAILED: 'SET_REGISTER_REQUEST_FAILED' = 'SET_REGISTER_REQUEST_FAILED';
@@ -44,13 +45,12 @@ export interface ISetForgotRequest {
 export interface ISetResetRequest {
     readonly type: typeof SET_RESET_REQUEST;
 }
-// Объединяем в Union
+
 export type TAuthActions =
     | ISetRegisterRequestSuccess | ISetResetRequest | ISetForgotRequest | ISetCheckRequest | ISetLogoutSuccess | ISetLoginRequestFailed | ISetLoginRequest | ISetRegisterRequest | ISetRegisterRequestFailed
-// @ts-ignore
-export function registerRequest(form) {
-    // @ts-ignore
-    return function(dispatch) {
+
+export function registerRequest(form: TUser) {
+    return function(dispatch: AppDispatch) {
         fetch(`${burgerUrl}/auth/register`, {
             method: 'POST',
             mode: 'cors',
@@ -73,7 +73,6 @@ export function registerRequest(form) {
                 if (data.success) {
                     dispatch({
                         type: SET_REGISTER_REQUEST_SUCCESS,
-                        // @ts-ignore
                         info: data.user
                     })
                     setCookie('accessToken', data.accessToken, { path: '/' });
@@ -87,10 +86,8 @@ export function registerRequest(form) {
     }
 }
 
-// @ts-ignore
-export function loginRequest(form) {
-    // @ts-ignore
-    return function(dispatch) {
+export function loginRequest(form: TUser) {
+    return function(dispatch: AppDispatch) {
         fetch(`${burgerUrl}/auth/login`, {
             method: 'POST',
             mode: 'cors',
@@ -132,10 +129,8 @@ export function loginRequest(form) {
     }
 }
 
-// @ts-ignore
 export function logoutRequest() {
-    // @ts-ignore
-    return function(dispatch) {
+    return function(dispatch: AppDispatch) {
         fetch(`${burgerUrl}/auth/logout`, {
             method: 'POST',
             mode: 'cors',
@@ -172,8 +167,7 @@ export function logoutRequest() {
 
 
 export function userRequest() {
-    // @ts-ignore
-    return function(dispatch) {
+    return function(dispatch: AppDispatch) {
         dispatch({
             type: SET_CHECK_REQUEST
         })
@@ -205,11 +199,8 @@ export function userRequest() {
     }
 }
 
-export function userChangeRequest(form: any) {
-    // @ts-ignore
-    return function(dispatch) {
-        // @ts-ignore
-        // @ts-ignore
+export function userChangeRequest(form: TUser) {
+    return function(dispatch: AppDispatch) {
         fetch(`${burgerUrl}/auth/user`, {
             method: 'PATCH',
             mode: 'cors',
@@ -246,9 +237,7 @@ export function userChangeRequest(form: any) {
 }
 
 export function refreshToken() {
-    // @ts-ignore
-    return function(dispatch) {
-        // @ts-ignore
+    return function(dispatch: AppDispatch) {
         fetch(`${burgerUrl}/auth/token`, {
             method: "POST",
             mode: 'cors',
@@ -270,7 +259,6 @@ export function refreshToken() {
                 if (data.success) {
                     dispatch({
                         type: SET_LOGIN_REQUEST,
-                        // @ts-ignore
                         info: data.user
                     })
                     setCookie('accessToken', data.accessToken, { path: '/' });
@@ -292,10 +280,9 @@ export function refreshToken() {
     }
 }
 
-// @ts-ignore
-export function forgotPasswordRequest(form) {
-    // @ts-ignore
-    return function(dispatch) {
+
+export function forgotPasswordRequest(form: TUser) {
+    return function(dispatch: AppDispatch) {
         fetch(`${burgerUrl}/password-reset`, {
             method: 'POST',
             mode: 'cors',
@@ -332,10 +319,9 @@ export function forgotPasswordRequest(form) {
     }
 }
 
-// @ts-ignore
-export function resetPasswordRequest(form) {
-    // @ts-ignore
-    return function(dispatch) {
+
+export function resetPasswordRequest(form: TUser) {
+    return function(dispatch: AppDispatch) {
         fetch(`${burgerUrl}/password-reset/reset`, {
             method: 'POST',
             mode: 'cors',
