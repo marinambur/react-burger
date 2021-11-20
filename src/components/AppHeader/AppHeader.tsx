@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from'./AppHeader.module.css';
 import { useRouteMatch } from 'react-router-dom';
-import {BurgerIcon, ListIcon, Logo, ProfileIcon} from "@ya.praktikum/react-developer-burger-ui-components";
+import {BurgerIcon, Logo, ProfileIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link} from "react-router-dom";
 import classNames from "classnames";
 
@@ -26,9 +26,9 @@ function AppHeader() {
                         </p>
                     </Link>
                 </nav>
-                <a href="/">
+                <Link to="/">
                     <Logo />
-                </a>
+                </Link>
                 <Link to="/profile" className={styles.menuButton}>
                     <ProfileIcon type={isProfile ? 'primary' : 'secondary'} />
                     <p className={classNames('text text_type_main-default pl-2', {'text_color_inactive' : !isProfile})}>

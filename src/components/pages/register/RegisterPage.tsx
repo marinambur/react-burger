@@ -5,7 +5,7 @@ import styles from './register.module.css';
 import {Button, EmailInput, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link} from "react-router-dom";
 
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch, useSelector} from "../../../types/types";
 import {registerRequest} from "../../../services/actions/auth";
 
 
@@ -29,7 +29,7 @@ export function RegisterPage() {
             history.replace({ pathname: '/login' });
 
         },
-        [ form, registerRequest]
+        [ form, dispatch, history]
     );
 
     if (auth) {

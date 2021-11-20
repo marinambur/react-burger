@@ -3,7 +3,7 @@ import React, {useCallback, useState} from 'react';
 import styles from './forgot-password.module.css';
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, Redirect, useHistory} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch, useSelector} from "../../../types/types";
 import {forgotPasswordRequest} from "../../../services/actions/auth";
 
 export function ForgotPasswordPage() {
@@ -24,7 +24,7 @@ export function ForgotPasswordPage() {
                 history.replace({ pathname: '/reset-password' });
             }
         },
-        [ form, forgotPasswordRequest]
+        [ form, dispatch, email, history]
     );
     if (email) {
         return (

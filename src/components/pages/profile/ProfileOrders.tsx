@@ -1,11 +1,12 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import styles from './profile.module.css';
 import {NavLink, Redirect, useHistory} from 'react-router-dom';
-import { logoutRequest, userChangeRequest} from "../../../services/actions/auth";
-import {useDispatch, useSelector} from "react-redux";
+import { logoutRequest} from "../../../services/actions/auth";
+import {useDispatch, useSelector} from "../../../types/types";
 import {deleteCookie} from "../../utils";
 import { UserFeed } from '../../UserFeed/UserFeed';
-import {wsActions, wsMyActions} from "../../../index";
+import {wsMyActions} from "../../../services/actions/wsMyActions";
+
 
 
 export function ProfileOrders() {
@@ -19,7 +20,7 @@ export function ProfileOrders() {
         return () => {
             dispatch({ type: wsMyActions.onClose });
         };
-    }, []);
+    }, [dispatch]);
     const logout = useCallback(
         e => {
             e.preventDefault();
@@ -34,7 +35,7 @@ export function ProfileOrders() {
 
 
         },
-        [ logoutRequest]
+        [ auth, dispatch, history]
     );
 
 

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import styles from "./AppMain.module.css";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";

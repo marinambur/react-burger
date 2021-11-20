@@ -16,7 +16,7 @@ function BurgerIngredients() {
     const dispatch = useDispatch();
     useEffect(()=> {
         dispatch(getFeed())
-    }, []);
+    }, [dispatch]);
     const handleScroll = () => {
         const bunHeader = document.getElementById('buns');
         const sauceHeader = document.getElementById('sauce');

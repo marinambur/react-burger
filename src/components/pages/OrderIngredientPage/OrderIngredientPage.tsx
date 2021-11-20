@@ -2,10 +2,11 @@ import React, {useEffect} from 'react';
 import styles from "./OrderIngredientPage.module.css";
 import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useParams, useRouteMatch} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import {wsActions, wsMyActions} from "../../../index";
+import {useDispatch, useSelector} from "../../../types/types";
 import {getFeed} from "../../../services/actions";
 import {getTotalPrice, getDate, getOrderIngredients} from "../../utils";
+import {wsActions} from "../../../services/actions/wsActions";
+import {wsMyActions} from "../../../services/actions/wsMyActions";
 
 export const OrderIngredientPage = () => {
 
@@ -16,7 +17,7 @@ export const OrderIngredientPage = () => {
     const dispatch = useDispatch();
     useEffect(()=> {
         dispatch(getFeed())
-    }, []);
+    }, [dispatch]);
     const allIngredients = useSelector((store: any) => (store.burgerCartReducer.allItems.items));
 
     useEffect(() => {
@@ -24,23 +25,19 @@ export const OrderIngredientPage = () => {
         return () => {
             dispatch({ type: wsActions.onClose });
         };
-    }, []);
+    }, [dispatch]);
     useEffect(() => {
         dispatch({ type: wsMyActions.wsInit });
         return () => {
             dispatch({ type: wsMyActions.onClose });
         };
-    }, []);
+    }, [dispatch]);
 
          const allOrderItems = useSelector((store: any) => (store?.wsReducer?.messages[0]?.orders));
-    const myItems = useSelector((store: any) => (store?.wsReducer?.messages[1]?.orders));
-
-
+    const myItems = useSelector((store: any) => (store?.wsMyReducer?.myMessages[0]?.orders));
 
     const myOrder = isFeed ?  allOrderItems?.filter((item: any)=>item.number===Number(ID))[0] : myItems?.filter((item: any)=>item.number===Number(ID))[0];
     const itemIngredients = getOrderIngredients(allIngredients, myOrder?.ingredients);
-    console.log(itemIngredients, 'itemIngredients')
-    console.log((store: any) => (store?.wsMyReducer), 'myItems')
 
     const price = getTotalPrice(itemIngredients);
     const date = getDate(myOrder?.createdAt);

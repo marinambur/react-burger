@@ -7,12 +7,23 @@ import {
     ADD_BUN, ADD_MAIN, DELETE_ITEM, TBurgerOrdersActions
 
 } from '../actions/burgerOrder';
-const initialState = {
+import {IngredientType, OrderType} from "../../types/types";
+
+type BurgerOrderState = {
+    allCartItems: {bun: IngredientType[],
+        main: IngredientType[]},
+    order: {    orderRequest: boolean,
+        orderRequestFailed: boolean,
+        order: OrderType[]},
+    orderModal: boolean,
+
+};
+const initialState: BurgerOrderState = {
     allCartItems: {bun: [],
         main: []},
     order: {    orderRequest: false,
         orderRequestFailed: false,
-        order: {}},
+        order: []},
     orderModal: false,
 
 };
@@ -26,7 +37,6 @@ export const burgerOrderReducer = (state = initialState, action: TBurgerOrdersAc
             };
         }
         case SET_ORDER_SUCCESS: {
-            console.log(state)
             return {
                 ...state,
                 order: {...state.order, order: action.items, orderRequestFailed: false},
@@ -57,15 +67,12 @@ export const burgerOrderReducer = (state = initialState, action: TBurgerOrdersAc
             };
         }
         case DELETE_ITEM: {
-            // @ts-ignore
             return { ...state, allCartItems: {...state.allCartItems, main: action.filteredArr }};
         }
         case ADD_BUN: {
-            // @ts-ignore
             return { ...state, allCartItems: { ...state.allCartItems, bun: [action.item] }};
         }
         case ADD_MAIN: {
-            // @ts-ignore
             return { ...state, allCartItems: { ...state.allCartItems, main: [...state.allCartItems.main, action.newItem] }};
         }
         default: {

@@ -1,8 +1,7 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import styles from './OrderFeed.module.css';
 import {OrderItem} from "../OrderItem/OrderItem";
-import {useDispatch, useSelector} from "react-redux";
-import {wsActions} from "../../index";
+import { useSelector} from "../../types/types";
 import {useLocation, Link} from "react-router-dom";
 
 export const OrderFeed = () => {

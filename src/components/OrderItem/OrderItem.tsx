@@ -1,8 +1,8 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import styles from './OrderItem.module.css';
 import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {getTotalPrice, getDate, getOrderIngredients} from "../utils";
-import {useDispatch, useSelector} from "react-redux";
+import { useSelector} from "../../types/types";
 export const OrderItem = (burger: any) => {
     const statuses: any = {
         'created': 'Создан',

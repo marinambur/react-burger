@@ -4,11 +4,19 @@ import {
     GET_FEED_FAILED,
     SHOW_INFO,
     ITEM_MODAL_CLOSE,
-    SET_TOTAL_PRICE, TActions,
+    SET_TOTAL_PRICE,
 
 } from '../actions';
+import {IngredientType} from "../../types/types";
+type BurgerCartState = {
+    allItems: {allItemsRequest: boolean,
+        allItemsRequestFailed: boolean,
+        items: IngredientType[]},
+    itemModal: boolean,
+    totalPrice: number,
 
-const initialState = {
+};
+const initialState: BurgerCartState = {
     allItems: {    allItemsRequest: false,
         allItemsRequestFailed: false,
         items: []},

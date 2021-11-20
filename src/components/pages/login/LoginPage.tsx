@@ -4,7 +4,7 @@ import styles from './login.module.css';
 import {Button, EmailInput, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, Redirect, useHistory, useLocation} from 'react-router-dom';
 import {loginRequest} from "../../../services/actions/auth";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch, useSelector} from '../../../types/types';
 export function LoginPage() {
     const [form, setFormValue] = useState({ name: '', email: '', password: '' });
     const dispatch = useDispatch();
@@ -29,7 +29,7 @@ export function LoginPage() {
 
 
         },
-        [ form, loginRequest]
+        [ auth, dispatch, history, form]
     );
 
     if (auth) {

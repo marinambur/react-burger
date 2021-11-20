@@ -1,6 +1,7 @@
 import {burgerUrl} from "../../components/App/App";
-import {store} from "../../index";
-export type AppDispatch = typeof store.dispatch;
+import {AppThunk} from "../../types/types";
+import {AppDispatch} from "../../types/types";
+
 export const GET_FEED: 'GET_FEED' = 'GET_FEED';
 export const GET_FEED_SUCCESS: 'GET_FEED_SUCCESS' = 'GET_FEED_SUCCESS';
 export const GET_FEED_FAILED: 'GET_FEED_FAILED' = 'GET_FEED_FAILED';
@@ -29,7 +30,7 @@ export interface ISetTotalPrice {
 
 export type TActions =
     | IGetFeed | IGetFeedSuccess | IGetFeedFailed | IShowInfo | IItemModalClose | ISetTotalPrice;
-export function getFeed() {
+export const getFeed: AppThunk = () => {
     return function(dispatch: AppDispatch) {
         dispatch({
             type: GET_FEED

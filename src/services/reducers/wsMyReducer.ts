@@ -1,17 +1,20 @@
 
 import {
     WS_MY_CONNECTION_CLOSED, WS_MY_CONNECTION_ERROR,
-    WS_MY_CONNECTION_START,
-    WS_MY_CONNECTION_SUCCESS, WS_MY_GET_MESSAGE,
-    WS_MY_SEND_MESSAGE, WS_MY_USER_NAME_UPDATE
+    WS_MY_CONNECTION_SUCCESS, WS_MY_GET_MESSAGE, WSMyActionsType
 } from '../actions/wsMyActions';
+import {WSDataType} from "../../types/types";
 
-const initialState = {
-    wsMyConnected: false,
-    messages: []
+
+type wsdMyState = {
+    wsMyConnected: boolean;
+    myMessages: WSDataType[] | [];
 };
-
-export const wsMyReducer = (state = initialState, action: { type: any; payload: any; }) => {
+const initialState: wsdMyState = {
+    wsMyConnected: false,
+    myMessages: []
+};
+export const wsMyReducer = (state = initialState, action: WSMyActionsType) => {
     switch (action.type) {
         case WS_MY_CONNECTION_SUCCESS:
             return {
@@ -34,14 +37,9 @@ export const wsMyReducer = (state = initialState, action: { type: any; payload: 
         case WS_MY_GET_MESSAGE:
             return {
                 ...state,
-                myMessages: state.messages.length
-                    ? [...state.messages, { ...action.payload, timestamp: new Date().getTime() / 1000 }]
+                myMessages: state.myMessages.length
+                    ? [...state.myMessages, { ...action.payload, timestamp: new Date().getTime() / 1000 }]
                     : [{ ...action.payload, timestamp: new Date().getTime() / 1000 }]
-            };
-        case WS_MY_USER_NAME_UPDATE:
-            return {
-                ...state,
-                user: action.payload
             };
 
         default:

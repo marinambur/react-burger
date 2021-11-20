@@ -1,11 +1,10 @@
 import React, {useEffect} from 'react';
 import styles from './feed.module.css';
 import {OrderFeed} from "../../OrderFeed/OrderFeed";
-import {useLocation} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import {wsActions} from "../../../index";
+import {wsActions} from "../../../services/actions/wsActions";
+import {useDispatch, useSelector} from "../../../types/types";
+
 export const FeedPage = () => {
-    const location = useLocation();
     const dispatch = useDispatch();
 
     useEffect(() => {

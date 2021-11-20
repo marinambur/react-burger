@@ -1,7 +1,7 @@
 import {burgerUrl} from "../../components/App/App";
 import {deleteCookie, getCookie, setCookie} from "../../components/utils";
-import {store} from "../../index";
-export type AppDispatch = typeof store.dispatch;
+import {AppThunk} from "../../types/types";
+import {AppDispatch} from "../../types/types";
 
 export const SET_REGISTER_REQUEST_SUCCESS: 'SET_REGISTER_REQUEST_SUCCESS'='SET_REGISTER_REQUEST_SUCCESS';
 export const SET_REGISTER_REQUEST_FAILED: 'SET_REGISTER_REQUEST_FAILED' = 'SET_REGISTER_REQUEST_FAILED';
@@ -49,7 +49,7 @@ export interface ISetResetRequest {
 export type TAuthActions =
     | ISetRegisterRequestSuccess | ISetResetRequest | ISetForgotRequest | ISetCheckRequest | ISetLogoutSuccess | ISetLoginRequestFailed | ISetLoginRequest | ISetRegisterRequest | ISetRegisterRequestFailed
 
-export function registerRequest(form: TUser) {
+export const registerRequest : AppThunk = (form: TUser) => {
     return function(dispatch: AppDispatch) {
         fetch(`${burgerUrl}/auth/register`, {
             method: 'POST',
@@ -86,7 +86,7 @@ export function registerRequest(form: TUser) {
     }
 }
 
-export function loginRequest(form: TUser) {
+export const loginRequest: AppThunk = (form: TUser) => {
     return function(dispatch: AppDispatch) {
         fetch(`${burgerUrl}/auth/login`, {
             method: 'POST',
@@ -129,7 +129,7 @@ export function loginRequest(form: TUser) {
     }
 }
 
-export function logoutRequest() {
+export const logoutRequest: AppThunk = () => {
     return function(dispatch: AppDispatch) {
         fetch(`${burgerUrl}/auth/logout`, {
             method: 'POST',
@@ -166,7 +166,7 @@ export function logoutRequest() {
 }
 
 
-export function userRequest() {
+export const userRequest: AppThunk = () => {
     return function(dispatch: AppDispatch) {
         dispatch({
             type: SET_CHECK_REQUEST
@@ -199,7 +199,7 @@ export function userRequest() {
     }
 }
 
-export function userChangeRequest(form: TUser) {
+export const userChangeRequest = (form: TUser) => {
     return function(dispatch: AppDispatch) {
         fetch(`${burgerUrl}/auth/user`, {
             method: 'PATCH',
@@ -220,7 +220,6 @@ export function userChangeRequest(form: TUser) {
                 return res.json();
             })
             .then((data) => {
-                console.log(data)
                 if (!data.success) {
                     alert(data.message)
                 }
@@ -236,7 +235,7 @@ export function userChangeRequest(form: TUser) {
     }
 }
 
-export function refreshToken() {
+export const refreshToken: AppThunk = () => {
     return function(dispatch: AppDispatch) {
         fetch(`${burgerUrl}/auth/token`, {
             method: "POST",
@@ -281,7 +280,7 @@ export function refreshToken() {
 }
 
 
-export function forgotPasswordRequest(form: TUser) {
+export const forgotPasswordRequest: AppThunk = (form: TUser) => {
     return function(dispatch: AppDispatch) {
         fetch(`${burgerUrl}/password-reset`, {
             method: 'POST',
@@ -320,7 +319,7 @@ export function forgotPasswordRequest(form: TUser) {
 }
 
 
-export function resetPasswordRequest(form: TUser) {
+export const resetPasswordRequest: AppThunk = (form: TUser) => {
     return function(dispatch: AppDispatch) {
         fetch(`${burgerUrl}/password-reset/reset`, {
             method: 'POST',

@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import AppHeader from "../AppHeader/AppHeader";
 import AppMain from "../AppMain/AppMain";
-import {Redirect, Route, Switch, useHistory, useLocation} from 'react-router-dom';
+import { Route, Switch, useHistory, useLocation} from 'react-router-dom';
 import { LoginPage } from '../pages/login/LoginPage';
 import {RegisterPage} from "../pages/register/RegisterPage";
 import {ResetPasswordPage} from "../pages/reset-password/ResetPasswordPage";
@@ -9,7 +9,7 @@ import {ForgotPasswordPage} from "../pages/forgot-password/ForgotPasswordPage";
 import ProfilePage from "../pages/profile/ProfilePage";
 import Modal from "../Modal/Modal";
 import {userRequest} from "../../services/actions/auth";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch, useSelector} from "../../types/types";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import IngredientPage from "../pages/ingredient/IngredientPage";
 import {ProtectedRoute} from "../ProtectedRoute/ProtectedRoute";
@@ -36,10 +36,10 @@ function AppSwitch() {
     const dispatch = useDispatch();
     useEffect(()=> {
         dispatch(userRequest());
-    }, []);
+    }, [dispatch]);
     useEffect(()=> {
         dispatch(getFeed())
-    }, []);
+    }, [dispatch]);
     const back = () => {
         history.goBack();
     };

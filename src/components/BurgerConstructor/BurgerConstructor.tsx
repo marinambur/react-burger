@@ -7,7 +7,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../Modal/Modal";
 import OrderDetails from "../OrderDetails/OrderDetails";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch, useSelector} from "../../types/types";
 import { useDrop } from 'react-dnd';
 
 import {
@@ -55,7 +55,6 @@ function BurgerConstructor() {
         if (constructorState.bun.length) {
             const ingredientsIds = getIngredientIds(constructorState.bun).ingredients.concat(getIngredientIds(constructorState.main).ingredients);
             dispatch( postData({ingredients: ingredientsIds}));
-            console.log(ingredientsIds, 'ingredientsIds')
         } else {
             alert("Обязательно выберите булку!")
             return;
@@ -71,7 +70,7 @@ function BurgerConstructor() {
                 hoverIndex
             })
         },
-        [constructorState.main],
+        [constructorState.main, dispatch],
     )
     const closeOrderModal = () => {
         dispatch({

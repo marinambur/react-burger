@@ -1,8 +1,8 @@
 import {burgerUrl} from "../../components/App/App";
 import {getCookie} from "../../components/utils";
-import {store} from "../../index";
 import {TIngredientsIds} from "../../types/types";
-export type AppDispatch = typeof store.dispatch;
+import {AppThunk} from "../../types/types";
+import {AppDispatch} from "../../types/types";
 export const SET_ORDER: 'SET_ORDER' = 'SET_ORDER';
 export const SET_ORDER_SUCCESS: 'SET_ORDER_SUCCESS' = 'SET_ORDER_SUCCESS';
 export const SET_ORDER_FAILED: 'SET_ORDER_FAILED' = 'SET_ORDER_FAILED';
@@ -30,18 +30,21 @@ export interface IDragSort {
 }
 export interface IDeleteItem {
     readonly type: typeof DELETE_ITEM;
+    readonly filteredArr: any;
 }
 export interface IAddBun {
     readonly type: typeof ADD_BUN;
+    readonly item: any
 }
 export interface IAddMain {
     readonly type: typeof ADD_MAIN;
+    readonly newItem: any
 }
 
 
 export type TBurgerOrdersActions =
     | ISetOrder | ISetOrderSuccess | ISetOrderFailed | IOrderModalClose | IDragSort | IDeleteItem | IAddBun | IAddMain;
-export function postData(ingredients: TIngredientsIds) {
+export const postData: AppThunk = (ingredients: TIngredientsIds) =>  {
     return function(dispatch: AppDispatch) {
         dispatch({
             type: SET_ORDER

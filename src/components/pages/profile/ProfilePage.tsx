@@ -3,7 +3,7 @@ import styles from './profile.module.css';
 import {NavLink, Redirect, useHistory} from 'react-router-dom';
 import {Button, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
 import { logoutRequest, userChangeRequest} from "../../../services/actions/auth";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch, useSelector} from "../../../types/types";
 import {deleteCookie} from "../../utils";
 function ProfilePage() {
     const inputRef = React.useRef(null);
@@ -33,7 +33,7 @@ function ProfilePage() {
 
 
         },
-        [ form, logoutRequest]
+        [ auth, dispatch, history]
     );
 
 
@@ -43,7 +43,7 @@ function ProfilePage() {
             dispatch(userChangeRequest(form)) ;
 
         },
-        [ form, userChangeRequest]
+        [ form, dispatch]
     );
     if(!auth) {
         history.replace({ pathname: '/login' });

@@ -1,5 +1,4 @@
 import React from 'react';
-import {inspect} from "util";
 import styles from './NotFound.module.css'
 
 export const NotFound

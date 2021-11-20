@@ -1,9 +1,8 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import styles from './UserFeed.module.css';
 import {OrderItem} from "../OrderItem/OrderItem";
 import {useLocation, Link} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import {wsActions} from "../../index";
+import {useSelector} from "react-redux";
 
 export const UserFeed = () => {
 
@@ -20,7 +19,6 @@ export const UserFeed = () => {
                     <OrderItem message={myBurger} key={index}></OrderItem>
                 </Link>
                 )
-
             )
             }
 

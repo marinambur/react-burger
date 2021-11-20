@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import styles from "./IngredientDetails.module.css";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch, useSelector} from "../../types/types";
 import {useParams} from "react-router-dom";
 import {getFeed} from "../../services/actions";
 
@@ -8,7 +8,7 @@ function IngredientDetails() {
     const dispatch = useDispatch();
     useEffect(()=> {
         dispatch(getFeed())
-    }, []);
+    }, [dispatch]);
     const items = useSelector((store: any) => (store.burgerCartReducer.allItems.items));
     // @ts-ignore
     let ID = useParams().id;

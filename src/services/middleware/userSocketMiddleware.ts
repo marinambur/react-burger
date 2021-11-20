@@ -1,13 +1,17 @@
 import {getCookie} from "../../components/utils";
+import {WSActions} from "../../types/types";
+import {AnyAction, MiddlewareAPI} from "redux";
 
-export const userSocketMiddleware = (wsMyUrl: any, wsActions: { wsInit: any; wsSendMessage: any; onOpen: any; onClose: any; onError: any; onMessage: any; }) => {
-    return (store: { dispatch: any; getState: any; }) => {
+
+export const userSocketMiddleware = (  wsMyUrl: string | (() => string),
+                                       wsMyActions: WSActions) => {
+    return (store: MiddlewareAPI) => {
         let socket: WebSocket | null = null;
 
-        return (next: (arg0: any) => void) => (action: { type: any; payload: any; }) => {
-            const { dispatch, getState } = store;
+        return (next: (arg0: any) => void) => (action: AnyAction ) => {
+            const { dispatch} = store;
             const { type, payload } = action;
-            const { wsInit, wsSendMessage, onOpen, onClose, onError, onMessage } = wsActions;
+            const { wsInit, wsSendMessage, onOpen, onClose, onError, onMessage } = wsMyActions;
             const token = getCookie('accessToken')?.replace('Bearer ', '');
             if (type === wsInit && token) {
                 socket = new WebSocket(`${wsMyUrl}?token=${token}`);

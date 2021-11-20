@@ -3,7 +3,7 @@ import React, {useCallback, useState} from 'react';
 import styles from './reset-password.module.css';
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, Redirect} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch, useSelector} from "../../../types/types";
 import { resetPasswordRequest} from "../../../services/actions/auth";
 
 export function ResetPasswordPage() {
@@ -21,7 +21,7 @@ export function ResetPasswordPage() {
             e.preventDefault();
             dispatch(resetPasswordRequest(form)) ;
         },
-        [ form, resetPasswordRequest]
+        [ form, dispatch]
     );
     if (!isEmail || isEmail==='false') {
         return (
