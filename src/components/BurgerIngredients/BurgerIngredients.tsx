@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import styles from './BurgerIngredients.module.css';
 import {Link, useLocation} from 'react-router-dom';
 import customScroll from '../BurgerConstructor/BurgerConstructor.module.css';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch, useSelector} from "../../types/types";
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import {
     getFeed,

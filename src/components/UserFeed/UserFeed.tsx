@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './UserFeed.module.css';
 import {OrderItem} from "../OrderItem/OrderItem";
 import {useLocation, Link} from "react-router-dom";
-import {useSelector} from "react-redux";
+import {useSelector} from "../../types/types";
 
 export const UserFeed = () => {
 
