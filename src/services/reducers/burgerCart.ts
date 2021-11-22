@@ -7,8 +7,16 @@ import {
     SET_TOTAL_PRICE,
 
 } from '../actions';
+import {IngredientType} from "../../types/types";
+type BurgerCartState = {
+    allItems: {allItemsRequest: boolean,
+        allItemsRequestFailed: boolean,
+        items: IngredientType[]},
+    itemModal: boolean,
+    totalPrice: number,
 
-const initialState = {
+};
+const initialState: BurgerCartState = {
     allItems: {    allItemsRequest: false,
         allItemsRequestFailed: false,
         items: []},
@@ -17,12 +25,9 @@ const initialState = {
 
 };
 
-
-// @ts-ignore
-export const burgerCartReducer = (state = initialState, action) => {
+export const burgerCartReducer = (state = initialState, action: any) => {
     switch (action.type) {
         case SHOW_INFO: {
-            // @ts-ignore
             return { ...state, itemModal: true };
         }
         case GET_FEED: {

@@ -1,19 +1,56 @@
 import {burgerUrl} from "../../components/App/App";
 import {deleteCookie, getCookie, setCookie} from "../../components/utils";
-export const SET_REGISTER_REQUEST_SUCCESS='SET_REGISTER_REQUEST_SUCCESS';
-export const SET_REGISTER_REQUEST_FAILED = 'SET_REGISTER_REQUEST_FAILED';
-export const SET_REGISTER_REQUEST = 'SET_REGISTER_REQUEST';
-export const SET_LOGIN_REQUEST='SET_LOGIN_REQUEST';
-export const SET_LOGIN_REQUEST_FAILED = 'SET_LOGIN_REQUEST_FAILED';
-export const SET_LOGOUT_SUCCESS = 'SET_LOGOUT_SUCCESS';
-export const SET_CHECK_REQUEST = 'SET_CHECK_REQUEST';
-export const SET_FORGOT_REQUEST = 'SET_FORGOT_REQUEST';
-export const SET_RESET_REQUEST = 'SET_RESET_REQUEST';
+import {AppThunk} from "../../types/types";
+import {AppDispatch} from "../../types/types";
 
-// @ts-ignore
-export function registerRequest(form) {
-    // @ts-ignore
-    return function(dispatch) {
+export const SET_REGISTER_REQUEST_SUCCESS: 'SET_REGISTER_REQUEST_SUCCESS'='SET_REGISTER_REQUEST_SUCCESS';
+export const SET_REGISTER_REQUEST_FAILED: 'SET_REGISTER_REQUEST_FAILED' = 'SET_REGISTER_REQUEST_FAILED';
+export const SET_REGISTER_REQUEST: 'SET_REGISTER_REQUEST' = 'SET_REGISTER_REQUEST';
+export const SET_LOGIN_REQUEST: 'SET_LOGIN_REQUEST'='SET_LOGIN_REQUEST';
+export const SET_LOGIN_REQUEST_FAILED: 'SET_LOGIN_REQUEST_FAILED' = 'SET_LOGIN_REQUEST_FAILED';
+export const SET_LOGOUT_SUCCESS: 'SET_LOGOUT_SUCCESS' = 'SET_LOGOUT_SUCCESS';
+export const SET_CHECK_REQUEST: 'SET_CHECK_REQUEST' = 'SET_CHECK_REQUEST';
+export const SET_FORGOT_REQUEST: 'SET_FORGOT_REQUEST' = 'SET_FORGOT_REQUEST';
+export const SET_RESET_REQUEST: 'SET_RESET_REQUEST' = 'SET_RESET_REQUEST';
+
+export type TUser = {
+    name?: string, email?: string, password?: string
+}
+export interface ISetRegisterRequestSuccess {
+    readonly type: typeof SET_REGISTER_REQUEST_SUCCESS;
+    readonly info: TUser;
+}
+export interface ISetRegisterRequestFailed {
+    readonly type: typeof SET_REGISTER_REQUEST_FAILED;
+}
+export interface ISetRegisterRequest {
+    readonly type: typeof SET_REGISTER_REQUEST;
+}
+export interface ISetLoginRequest {
+    readonly type: typeof SET_LOGIN_REQUEST;
+}
+export interface ISetLoginRequestFailed {
+    readonly type: typeof SET_LOGIN_REQUEST_FAILED;
+}
+export interface ISetLogoutSuccess {
+    readonly type: typeof SET_LOGOUT_SUCCESS;
+    readonly info: TUser;
+}
+export interface ISetCheckRequest {
+    readonly type: typeof SET_CHECK_REQUEST;
+}
+export interface ISetForgotRequest {
+    readonly type: typeof SET_FORGOT_REQUEST;
+}
+export interface ISetResetRequest {
+    readonly type: typeof SET_RESET_REQUEST;
+}
+
+export type TAuthActions =
+    | ISetRegisterRequestSuccess | ISetResetRequest | ISetForgotRequest | ISetCheckRequest | ISetLogoutSuccess | ISetLoginRequestFailed | ISetLoginRequest | ISetRegisterRequest | ISetRegisterRequestFailed
+
+export const registerRequest : AppThunk = (form: TUser) => {
+    return function(dispatch: AppDispatch) {
         fetch(`${burgerUrl}/auth/register`, {
             method: 'POST',
             mode: 'cors',
@@ -36,7 +73,6 @@ export function registerRequest(form) {
                 if (data.success) {
                     dispatch({
                         type: SET_REGISTER_REQUEST_SUCCESS,
-                        // @ts-ignore
                         info: data.user
                     })
                     setCookie('accessToken', data.accessToken, { path: '/' });
@@ -50,10 +86,8 @@ export function registerRequest(form) {
     }
 }
 
-// @ts-ignore
-export function loginRequest(form) {
-    // @ts-ignore
-    return function(dispatch) {
+export const loginRequest: AppThunk = (form: TUser) => {
+    return function(dispatch: AppDispatch) {
         fetch(`${burgerUrl}/auth/login`, {
             method: 'POST',
             mode: 'cors',
@@ -95,10 +129,8 @@ export function loginRequest(form) {
     }
 }
 
-// @ts-ignore
-export function logoutRequest() {
-    // @ts-ignore
-    return function(dispatch) {
+export const logoutRequest: AppThunk = () => {
+    return function(dispatch: AppDispatch) {
         fetch(`${burgerUrl}/auth/logout`, {
             method: 'POST',
             mode: 'cors',
@@ -134,9 +166,8 @@ export function logoutRequest() {
 }
 
 
-export function userRequest() {
-    // @ts-ignore
-    return function(dispatch) {
+export const userRequest: AppThunk = () => {
+    return function(dispatch: AppDispatch) {
         dispatch({
             type: SET_CHECK_REQUEST
         })
@@ -168,11 +199,8 @@ export function userRequest() {
     }
 }
 
-export function userChangeRequest(form: any) {
-    // @ts-ignore
-    return function(dispatch) {
-        // @ts-ignore
-        // @ts-ignore
+export const userChangeRequest = (form: TUser) => {
+    return function(dispatch: AppDispatch) {
         fetch(`${burgerUrl}/auth/user`, {
             method: 'PATCH',
             mode: 'cors',
@@ -192,7 +220,6 @@ export function userChangeRequest(form: any) {
                 return res.json();
             })
             .then((data) => {
-                console.log(data)
                 if (!data.success) {
                     alert(data.message)
                 }
@@ -208,10 +235,8 @@ export function userChangeRequest(form: any) {
     }
 }
 
-export function refreshToken() {
-    // @ts-ignore
-    return function(dispatch) {
-        // @ts-ignore
+export const refreshToken: AppThunk = () => {
+    return function(dispatch: AppDispatch) {
         fetch(`${burgerUrl}/auth/token`, {
             method: "POST",
             mode: 'cors',
@@ -233,7 +258,6 @@ export function refreshToken() {
                 if (data.success) {
                     dispatch({
                         type: SET_LOGIN_REQUEST,
-                        // @ts-ignore
                         info: data.user
                     })
                     setCookie('accessToken', data.accessToken, { path: '/' });
@@ -255,10 +279,9 @@ export function refreshToken() {
     }
 }
 
-// @ts-ignore
-export function forgotPasswordRequest(form) {
-    // @ts-ignore
-    return function(dispatch) {
+
+export const forgotPasswordRequest: AppThunk = (form: TUser) => {
+    return function(dispatch: AppDispatch) {
         fetch(`${burgerUrl}/password-reset`, {
             method: 'POST',
             mode: 'cors',
@@ -295,10 +318,9 @@ export function forgotPasswordRequest(form) {
     }
 }
 
-// @ts-ignore
-export function resetPasswordRequest(form) {
-    // @ts-ignore
-    return function(dispatch) {
+
+export const resetPasswordRequest: AppThunk = (form: TUser) => {
+    return function(dispatch: AppDispatch) {
         fetch(`${burgerUrl}/password-reset/reset`, {
             method: 'POST',
             mode: 'cors',

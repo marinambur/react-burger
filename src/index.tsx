@@ -9,8 +9,17 @@ import thunk from 'redux-thunk';
 import { rootReducer } from './services/reducers';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-
-const store = createStore(rootReducer, applyMiddleware(thunk));
+import {
+wsActions
+} from './services/actions/wsActions';
+import {socketMiddleware} from "./services/middleware/socketMiddleware";
+import {
+wsMyActions
+} from "./services/actions/wsMyActions";
+import {userSocketMiddleware} from "./services/middleware/userSocketMiddleware";
+const wsUrl = 'wss://norma.nomoreparties.space/orders/all';
+const wsMyUrl = 'wss://norma.nomoreparties.space/orders';
+export const store = createStore(rootReducer, applyMiddleware(thunk, socketMiddleware(wsUrl, wsActions), userSocketMiddleware(wsMyUrl, wsMyActions)));
 
 
 

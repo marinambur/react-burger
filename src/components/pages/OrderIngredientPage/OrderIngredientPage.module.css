@@ -1,0 +1,66 @@
+.textBox {
+    display: flex;
+    justify-content: space-between;
+}
+.info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 20px;
+}
+.header {
+    margin-top: 13px;
+    align-self: start;
+}
+.cardText {
+    align-self: start;
+}
+.cardNumber {
+    align-self: center;
+}
+.cardReadyText {
+    color: #00CCCC;
+}
+.box {
+    color: white;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+    margin: auto;
+    min-width: 540px;
+    z-index: 15;
+}
+.container {
+    width: 100%;
+}
+.circle {
+    position: relative;
+    margin-right: 16px;
+    margin-top: -16px;
+    width: 64px;
+    height: 64px;
+    background: #131316;
+    border-radius: 100%;
+    border: 2px solid rgba(128, 26, 178, 1);
+}
+
+.circleImg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 112px;
+    height: 56px;
+}
+.element {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 35px;
+}
+.elementContainer {
+    display: flex;
+}

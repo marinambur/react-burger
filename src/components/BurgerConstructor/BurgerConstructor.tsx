@@ -7,7 +7,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../Modal/Modal";
 import OrderDetails from "../OrderDetails/OrderDetails";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch, useSelector} from "../../types/types";
 import { useDrop } from 'react-dnd';
 
 import {
@@ -36,7 +36,7 @@ function BurgerConstructor() {
             canDrop: monitor.canDrop(),
         }),
     }));
-    const totalPrice = useMemo(()=> {
+ const totalPrice = useMemo(()=> {
         const array = constructorState.main;
         const arrayBun = constructorState.bun;
         return array.map((item: { type: string; price: number; }) => item.type==='bun' ? item.price*2 : item.price).reduce((a: any, b: any) => a + b, 0) + arrayBun.map((item: { type: string; price: number; }) => item.type==='bun' ? item.price*2 : item.price).reduce((a: any, b: any) => a + b, 0)
@@ -70,7 +70,7 @@ function BurgerConstructor() {
                 hoverIndex
             })
         },
-        [constructorState.main],
+        [constructorState.main, dispatch],
     )
     const closeOrderModal = () => {
         dispatch({

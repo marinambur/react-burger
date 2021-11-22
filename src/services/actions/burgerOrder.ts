@@ -1,23 +1,61 @@
 import {burgerUrl} from "../../components/App/App";
-export const SET_ORDER = 'SET_ORDER';
-export const SET_ORDER_SUCCESS = 'SET_ORDER_SUCCESS';
-export const SET_ORDER_FAILED = 'SET_ORDER_FAILED';
-export const ORDER_MODAL_CLOSE='ORDER_MODAL_CLOSE';
-export const DRAG_SORT = 'DRAG_SORT';
-export const DELETE_ITEM = 'DELETE_ITEM';
-export const ADD_BUN = 'ADD_BUN';
-export const ADD_MAIN = 'ADD_MAIN';
-// @ts-ignore
-export function postData(ingredients) {
-    // @ts-ignore
-    return function(dispatch) {
+import {getCookie} from "../../components/utils";
+import {TIngredientsIds} from "../../types/types";
+import {AppThunk} from "../../types/types";
+import {AppDispatch} from "../../types/types";
+export const SET_ORDER: 'SET_ORDER' = 'SET_ORDER';
+export const SET_ORDER_SUCCESS: 'SET_ORDER_SUCCESS' = 'SET_ORDER_SUCCESS';
+export const SET_ORDER_FAILED: 'SET_ORDER_FAILED' = 'SET_ORDER_FAILED';
+export const ORDER_MODAL_CLOSE: 'ORDER_MODAL_CLOSE'='ORDER_MODAL_CLOSE';
+export const DRAG_SORT: 'DRAG_SORT' = 'DRAG_SORT';
+export const DELETE_ITEM: 'DELETE_ITEM' = 'DELETE_ITEM';
+export const ADD_BUN: 'ADD_BUN' = 'ADD_BUN';
+export const ADD_MAIN: 'ADD_MAIN' = 'ADD_MAIN';
+
+export interface ISetOrder {
+    readonly type: typeof SET_ORDER;
+}
+export interface ISetOrderSuccess {
+    readonly type: typeof SET_ORDER_SUCCESS;
+    readonly items: any;
+}
+export interface ISetOrderFailed {
+    readonly type: typeof SET_ORDER_FAILED;
+}
+export interface IOrderModalClose {
+    readonly type: typeof ORDER_MODAL_CLOSE;
+}
+export interface IDragSort {
+    readonly type: typeof DRAG_SORT;
+}
+export interface IDeleteItem {
+    readonly type: typeof DELETE_ITEM;
+    readonly filteredArr: any;
+}
+export interface IAddBun {
+    readonly type: typeof ADD_BUN;
+    readonly item: any
+}
+export interface IAddMain {
+    readonly type: typeof ADD_MAIN;
+    readonly newItem: any
+}
+
+
+export type TBurgerOrdersActions =
+    | ISetOrder | ISetOrderSuccess | ISetOrderFailed | IOrderModalClose | IDragSort | IDeleteItem | IAddBun | IAddMain;
+export const postData: AppThunk = (ingredients: TIngredientsIds) =>  {
+    return function(dispatch: AppDispatch) {
         dispatch({
             type: SET_ORDER
         })
+
         fetch(`${burgerUrl}/orders`, {
             method: 'POST',
+            // @ts-ignore
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': getCookie('accessToken')
             },
             body: JSON.stringify(
                 ingredients
@@ -32,7 +70,6 @@ export function postData(ingredients) {
             .then((data) =>
                 dispatch({
                     type: SET_ORDER_SUCCESS,
-                    // @ts-ignore
                     items: data
                 })
             )

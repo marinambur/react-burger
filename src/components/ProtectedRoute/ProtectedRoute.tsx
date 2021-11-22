@@ -1,5 +1,5 @@
 import {Redirect, Route} from 'react-router-dom';
-import {useSelector} from "react-redux";
+import {useSelector} from "../../types/types";
 
 // @ts-ignore
 export function ProtectedRoute({ children, ...rest }) {

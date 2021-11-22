@@ -4,14 +4,29 @@ import {
     SET_CHECK_REQUEST, SET_LOGIN_REQUEST_FAILED, SET_FORGOT_REQUEST, SET_RESET_REQUEST
 
 } from '../actions/auth';
-const initialState = {
+
+import type { TAuthActions } from '../actions/auth';
+type TUser = {
+    name?: string,
+    email?: string,
+    password?: string
+}
+type TInitialState = {
+    reg: {
+        regRequest: boolean, isChecked: boolean,
+        regRequestFailed: boolean,
+        user: TUser[] | {}, authorization: boolean, login: boolean, loginRequest: boolean,
+        loginRequestFailed: boolean, forgotSuccess: boolean, reset: boolean
+    }
+}
+const initialState: TInitialState = {
     reg: {    regRequest: false, isChecked: false,
         regRequestFailed: false,
         user: {}, authorization: false, login: false, loginRequest: false,
         loginRequestFailed: false, forgotSuccess: false, reset: false},
 };
-// @ts-ignore
-export const authReducer = (state = initialState, action) => {
+
+export const authReducer = (state = initialState, action: TAuthActions) => {
     switch (action.type) {
         case SET_REGISTER_REQUEST: {
             return {

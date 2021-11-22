@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import styles from "../BurgerItem/BurgerItem.module.css";
 import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {useSelector} from "react-redux";
+import {useSelector} from "../../types/types";
 interface BurgerItemPropsInterface {
     _id: string,
     price: number,

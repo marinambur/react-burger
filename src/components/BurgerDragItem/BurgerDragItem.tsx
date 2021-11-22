@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import BurgerItem from "../BurgerItem/BurgerItem";
 import {useDrag} from "react-dnd";
 import {ADD_BUN, ADD_MAIN} from "../../services/actions/burgerOrder";
-import {useDispatch} from "react-redux";
+import {useDispatch} from "../../types/types";
 import {v4 as uuidv4} from "uuid";
 import {IBurgerItem} from "../../types/types";
 interface BurgerDragItemPropsInterface {
