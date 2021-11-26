@@ -94,7 +94,7 @@ function BurgerConstructor() {
         );
     }
     return (
-        <div className={`mt-3`} ref={drop} role={'Dustbin'}>
+        <div className={`mt-3`} ref={drop} role={'Dustbin'} id='box'>
                 {orderModalState &&  <Modal onClose={closeOrderModal}  >
                     <OrderDetails info={orderState.order}></OrderDetails>
                 </Modal>}
