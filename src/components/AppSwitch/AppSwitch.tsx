@@ -19,6 +19,7 @@ import {ProfileOrders} from "../pages/profile/ProfileOrders";
 import {OrderIngredientPage} from "../pages/OrderIngredientPage/OrderIngredientPage";
 import {NotFound} from "../pages/NotFound/NotFound";
 import {getFeed} from "../../services/actions";
+import {LoaderComponent} from "../LoaderComponent/LoaderComponent";
 
 export const url = 'https://norma.nomoreparties.space/api/ingredients';
 function AppSwitch() {
@@ -47,7 +48,7 @@ function AppSwitch() {
         return (
       <>
           <AppHeader />
-          <NotFound/>
+          <LoaderComponent/>
       </>
         );
     }

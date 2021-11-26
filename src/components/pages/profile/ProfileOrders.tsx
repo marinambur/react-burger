@@ -6,6 +6,7 @@ import {useDispatch, useSelector} from "../../../types/types";
 import {deleteCookie} from "../../utils";
 import { UserFeed } from '../../UserFeed/UserFeed';
 import {wsMyActions} from "../../../services/actions/wsMyActions";
+import {LoaderComponent} from "../../LoaderComponent/LoaderComponent";
 
 
 
@@ -51,9 +52,13 @@ export function ProfileOrders() {
             />
         );
     }
-    if (!myBurgers) {
-        return null
-    }
+        if (!myBurgers) {
+            return (
+                <>
+                    <LoaderComponent/>
+                </>
+            );
+        }
     return (
         <div className={styles.container}>
             <div className={`${styles.left} mr-15`}>

@@ -1,4 +1,3 @@
-import {getCookie} from "../../components/utils";
 import {WSActions} from "../../types/types";
 import { AnyAction, MiddlewareAPI } from "redux";
 export const socketMiddleware = (  wsUrl: string | (() => string),
@@ -10,8 +9,7 @@ export const socketMiddleware = (  wsUrl: string | (() => string),
             const { dispatch} = store;
             const { type, payload } = action;
             const { wsInit, wsSendMessage, onOpen, onClose, onError, onMessage } = wsActions;
-            const token = getCookie('accessToken')?.replace('Bearer ', '');
-            if (type === wsInit && token) {
+            if (type === wsInit) {
                 socket = new WebSocket(`${wsUrl}`);
             }
             if (socket) {
@@ -38,7 +36,6 @@ export const socketMiddleware = (  wsUrl: string | (() => string),
                 if (type === wsSendMessage) {
                     socket.send(JSON.stringify({
                         ...payload,
-                        token: token
                     }));
                 }
             }

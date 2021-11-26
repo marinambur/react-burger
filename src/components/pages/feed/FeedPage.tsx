@@ -3,6 +3,8 @@ import styles from './feed.module.css';
 import {OrderFeed} from "../../OrderFeed/OrderFeed";
 import {wsActions} from "../../../services/actions/wsActions";
 import {useDispatch, useSelector} from "../../../types/types";
+import AppHeader from "../../AppHeader/AppHeader";
+import {LoaderComponent} from "../../LoaderComponent/LoaderComponent";
 
 export const FeedPage = () => {
     const dispatch = useDispatch();
@@ -18,7 +20,13 @@ export const FeedPage = () => {
     const doneOrders = orders?.filter((order: any)=> order.status === 'done');
     const pendingOrders = orders?.filter((order: any)=> order.status === 'pending');
 
-
+    if (!orders) {
+        return (
+            <>
+                <LoaderComponent/>
+            </>
+        );
+    }
     return (
             <div className={styles.content}>
                 <div className={styles.ingredients}>
