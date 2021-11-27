@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import styles from './BurgerConstructor.module.css';
 import {
     CurrencyIcon,
@@ -18,12 +18,14 @@ import {
 } from "../../services/actions/burgerOrder";
 import ConstructorDragItem from '../ConstructorDragItem/ConstructorDragItem';
 import {useHistory} from "react-router-dom";
+import {LoaderComponent} from "../LoaderComponent/LoaderComponent";
 
 function BurgerConstructor() {
 
     const constructorState = useSelector((store: any) => (store.burgerOrderReducer.allCartItems));
     const orderState = useSelector((store: any) => (store.burgerOrderReducer.order));
     const orderModalState = useSelector((store: any) => (store.burgerOrderReducer.orderModal));
+    const orderWaitingState = useSelector((store: any) => (store.burgerOrderReducer.order.orderRequest));
     const history = useHistory();
     const ItemTypes = {
         BOX: 'box',
@@ -55,6 +57,8 @@ function BurgerConstructor() {
         if (constructorState.bun.length) {
             const ingredientsIds = getIngredientIds(constructorState.bun).ingredients.concat(getIngredientIds(constructorState.main).ingredients);
             dispatch( postData({ingredients: ingredientsIds}));
+            console.log(orderWaitingState)
+
         } else {
             alert("Обязательно выберите булку!")
             return;
@@ -82,12 +86,19 @@ function BurgerConstructor() {
             type: DELETE_ITEM,
             filteredArr
         })};
+    if (orderWaitingState && !orderModalState ) {
+        return (
+            <>
+                <LoaderComponent/>
+            </>
+        );
+    }
     return (
-        <div className={`mt-3`} ref={drop} role={'Dustbin'}>
+        <div className={`mt-3`} ref={drop} role={'Dustbin'} id='box'>
                 {orderModalState &&  <Modal onClose={closeOrderModal}  >
                     <OrderDetails info={orderState.order}></OrderDetails>
                 </Modal>}
-                <div className={`mb-20`} style={{ display: 'flex', flexDirection: 'column' }}>
+                <div className={`mb-20`} style={{ display: 'flex', flexDirection: 'column' }} id='box'>
                     {constructorState && constructorState.bun.map((item: any, index: any) =>
                         <ConstructorDragItem delete={deleteItem} key={index} index={index} id={item.uniqueId} moveCard={moveCard} type={'top'} item={item} isLocked={true}>
                         </ConstructorDragItem>

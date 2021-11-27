@@ -54,7 +54,7 @@ function BurgerIngredients() {
                 </Tab>
             </div>
             <div className={styles.constructorContainer}>
-                <div id='box' className={`${customScroll.customScroll} ${styles.box}`}>
+                <div className={`${customScroll.customScroll} ${styles.box}`}>
                     <h2 id='buns' className="text text_type_main-medium mb-2" >Булки</h2>
                     <div className={styles.itemBox}>
                         {items && items.filter((item: IBurgerItem) => item.type === 'bun').map((item: IBurgerItem) =>

@@ -1,0 +1,10 @@
+.container {
+    height: 80vh;
+    display: flex;
+
+}
+.box {
+    max-width: 300px;
+    max-height: 300px;
+    margin: auto;
+}

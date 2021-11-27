@@ -25,8 +25,8 @@ const Modal: FC<ModalPropsInterface> = (props) => {
         (
             <>
                 <ModalOverlay onClose={props.onClose}>
-                    <div className={styles.popup}>
-                        <div className={styles.close}><CloseIcon type="primary" onClick={props.onClose}/></div>
+                    <div className={styles.popup} id='popup'>
+                        <div className={styles.close}  id='closeButton'><CloseIcon type="primary" onClick={props.onClose}/></div>
                         {props.children}
                     </div>
                 </ModalOverlay>
